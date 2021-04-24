@@ -1,0 +1,7 @@
+Beer
+Wine
+Vodka
+Whiskey
+Rum
+Brandy
+Gin
