@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/static/expand.css" />
-{% if cookie == False %}
+{% if cookie == "False" %}
 
 <div class="expandable section">
   <h2>Signup</h2>
@@ -50,7 +50,10 @@
       <p>{{emoji}} {{item['Name']}} : ∂{{item['Price']}}</p>
     {% endfor %}
     <h3>Cooldowns</h3>
-    
+    <p>Work: {{ready[0]}}</p>
+    <p>Tips: {{ready[1]}}</p>
+    <p>Overtime: {{ready[2]}}</p>
+    <p>Daily: {{ready[3]}}</p>
   </div>
 </div>
 

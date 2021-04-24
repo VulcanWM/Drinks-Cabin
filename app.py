@@ -7,7 +7,10 @@ from functions import getcookie, getuser, gethashpass, addcookie, allusers, make
 
 @app.route("/")
 def main():
-  return render_template("index.html", cookie=getcookie("User"), user=getuser(getcookie("User")), cooldown=getusercd(getcookie("User")))
+  cookie = str(getcookie("User"))
+  user = getuser(cookie)
+  ready = getusercd(cookie)
+  return render_template("index.html", cookie=cookie, user=user, ready=ready)
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
