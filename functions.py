@@ -83,6 +83,7 @@ def getusercd(username):
   if user['Work'] == None:
     cd.append("Ready")
   else:
+    thetime = user['Work']
     a = datetime.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
     current = datetime.datetime.utcnow()
     year = str(current).split("-")[0]
@@ -103,6 +104,7 @@ def getusercd(username):
   if user['Tip'] == None:
     cd.append("Ready")
   else:
+    thetime = user['Tip']
     a = datetime.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
     current = datetime.datetime.utcnow()
     year = str(current).split("-")[0]
@@ -123,6 +125,7 @@ def getusercd(username):
   if user['Overtime'] == None:
     cd.append("Ready")
   else:
+    thetime = user['Overtime']
     a = datetime.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
     current = datetime.datetime.utcnow()
     year = str(current).split("-")[0]
@@ -143,6 +146,7 @@ def getusercd(username):
   if user['Daily'] == None:
     cd.append("Ready")
   else:
+    thetime = user['Daily']
     a = datetime.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
     current = datetime.datetime.utcnow()
     year = str(current).split("-")[0]
@@ -220,6 +224,41 @@ def workfunc(username):
       cooldowncol.delete_one(delete)
       cooldowncol.insert_many([user2])
   return every
+
+def dailyfunc(username):
+  if getusercd(username)[3] != "Ready":
+    return False
+  user = getuser(username)
+  for uservalue in profilescol.find():
+    if uservalue['Username'] == username:
+      user2 = uservalue
+      newam = str(float(user2['Money']) + float(25000.0))
+      newam = str(newam) + "0"
+      del user2['Money']
+      user2['Money'] = newam
+      delete = {"_id": uservalue['_id']}
+      profilescol.delete_one(delete)
+      profilescol.insert_many([user2])
+  for uservalue in cooldowncol.find():
+    if uservalue['Username'] == username:
+      current = datetime.datetime.utcnow()
+      year = str(current).split("-")[0]
+      month = str(current).split("-")[1]
+      daypart = str(current).split("-")[2]
+      day = str(daypart).split()[0]
+      something1 = str(current).split()[1]
+      something = something1.split(".")[0]
+      hour = something.split(":")[0]
+      minute = something.split(":")[1]
+      second = something.split(":")[2]
+      thetime = year + " " + month + " " + day + " " + hour + " " + minute + " " + second
+      user2 = uservalue
+      del user2['Daily']
+      user2['Daily'] = thetime
+      delete = {"_id": uservalue['_id']}
+      cooldowncol.delete_one(delete)
+      cooldowncol.insert_many([user2])
+  return "You have claimed your ∂25000.00 daily reward!"
 
 def tipfunc(username):
   if getusercd(username)[1] != "Ready":
