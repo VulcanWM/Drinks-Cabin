@@ -3,7 +3,7 @@ import os
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc
 
 @app.route("/")
 def main():
@@ -49,3 +49,17 @@ def logout():
     return render_template("error.html", error="You have not logged in!")
   delcookie("User")
   return redirect("/")
+
+@app.route("/work")
+def work():
+  if getcookie("User") == False:
+    return render_template("error.html", error="You have not logged in!")
+  every = workfunc(getcookie("User"))
+  return render_template("success.html", type="work", every=every)
+
+@app.route("/tips")
+def tips():
+  if getcookie("User") == False:
+    return render_template("error.html", error="You have not logged in!")
+  tip = tipfunc(getcookie("User"))
+  return render_template("success.html", type="tip", tip=tip)

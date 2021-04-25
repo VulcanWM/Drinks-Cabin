@@ -67,21 +67,6 @@ def makeaccountcd(username):
   }]
   cooldowncol.insert_many(document)
 
-"""
-add time to the work, tip or Overtime
-current = dt.datetime.utcnow()
-year = str(current).split("-")[0]
-month = str(current).split("-")[1]
-daypart = str(current).split("-")[2]
-day = str(daypart).split()[0]
-something1 = str(current).split()[1]
-something = something1.split(".")[0]
-hour = something.split(":")[0]
-minute = something.split(":")[1]
-second = something.split(":")[2]
-thetime = year + " " + month + " " + day + " " + hour + " " + minute + " " + second
-"""
-
 def getusercd(username):
   user = {}
   for uservalue in cooldowncol.find():
@@ -114,11 +99,11 @@ def getusercd(username):
     if seconds > 600:
       cd.append("Ready")
     else:
-      cd.append(f"{str(seconds)} left")
+      cd.append(f"{str(600 - seconds)} seconds left")
   if user['Tip'] == None:
     cd.append("Ready")
   else:
-    a = dt.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
+    a = datetime.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
     current = datetime.datetime.utcnow()
     year = str(current).split("-")[0]
     month = str(current).split("-")[1]
@@ -129,16 +114,16 @@ def getusercd(username):
     hour = something.split(":")[0]
     minute = something.split(":")[1]
     second = something.split(":")[2]
-    b = dt.datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
+    b = datetime.datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
     seconds = (b-a).total_seconds()
     if seconds > 300:
       cd.append("Ready")
     else:
-      cd.append(f"{str(seconds)} left")
+      cd.append(f"{str(300 - seconds)} seconds left")
   if user['Overtime'] == None:
     cd.append("Ready")
   else:
-    a = dt.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
+    a = datetime.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
     current = datetime.datetime.utcnow()
     year = str(current).split("-")[0]
     month = str(current).split("-")[1]
@@ -149,16 +134,16 @@ def getusercd(username):
     hour = something.split(":")[0]
     minute = something.split(":")[1]
     second = something.split(":")[2]
-    b = dt.datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
+    b = datetime.datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
     seconds = (b-a).total_seconds()
     if seconds > 1800:
       cd.append("Ready")
     else:
-      cd.append(f"{str(seconds)} left")
+      cd.append(f"{str(1800 - seconds)} seconds left")
   if user['Daily'] == None:
     cd.append("Ready")
   else:
-    a = dt.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
+    a = datetime.datetime(int(thetime.split()[0]), int(thetime.split()[1]), int(thetime.split()[2]), int(thetime.split()[3]), int(thetime.split()[4]), int(thetime.split()[5]))
     current = datetime.datetime.utcnow()
     year = str(current).split("-")[0]
     month = str(current).split("-")[1]
@@ -169,12 +154,12 @@ def getusercd(username):
     hour = something.split(":")[0]
     minute = something.split(":")[1]
     second = something.split(":")[2]
-    b = dt.datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
+    b = datetime.datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
     seconds = (b-a).total_seconds()
     if seconds > 86400:
       cd.append("Ready")
     else:
-      cd.append(f"{str(seconds)} left")
+      cd.append(f"{str(84000 - seconds)} seconds left")
   return cd
   
 def workfunc(username):
@@ -183,14 +168,24 @@ def workfunc(username):
   user = getuser(username)
   stuff = []
   total = 0
-  amountto = 0
+  amountto = user['Drinks']
   for item in user['Menu']:
     amount = random.randint(1,100)
     earned = float(item['Price']) * amount
-    theitem = {"Amount": str(amount), "Item": item["Name"], "Earned": str(earned)}
+    for item in user['Menu']:
+      if item['Name'] == "Water":
+        emoji = "🥤"
+      elif item['Type'] == "Popular":
+        emoji = "🫖"
+      elif item['Type'] == "Juice":
+        emoji = "🍹"
+      elif item['Type'] == "Alcoholic":
+        emoji = "🍺"
+    theitem = {"Amount": str(amount), "Item": item["Name"], "Earned": str(earned) + "0", "Emoji": emoji}
     stuff.append(theitem)
     amountto = amountto + amount
     total = total + float(earned)
+  total = str(total) + "0"
   every = {"Stuff": stuff, "Total": total}
   for uservalue in profilescol.find():
     if uservalue['Username'] == username:
@@ -225,3 +220,39 @@ def workfunc(username):
       cooldowncol.delete_one(delete)
       cooldowncol.insert_many([user2])
   return every
+
+def tipfunc(username):
+  if getusercd(username)[1] != "Ready":
+    return False
+  user = getuser(username)
+  tips = random.randint(1,500)
+  for uservalue in profilescol.find():
+    if uservalue['Username'] == username:
+      user2 = uservalue
+      newam = str(float(user2['Money']) + float(tips))
+      newam = str(newam) + "0"
+      del user2['Money']
+      user2['Money'] = newam
+      delete = {"_id": uservalue['_id']}
+      profilescol.delete_one(delete)
+      profilescol.insert_many([user2])
+  for uservalue in cooldowncol.find():
+    if uservalue['Username'] == username:
+      current = datetime.datetime.utcnow()
+      year = str(current).split("-")[0]
+      month = str(current).split("-")[1]
+      daypart = str(current).split("-")[2]
+      day = str(daypart).split()[0]
+      something1 = str(current).split()[1]
+      something = something1.split(".")[0]
+      hour = something.split(":")[0]
+      minute = something.split(":")[1]
+      second = something.split(":")[2]
+      thetime = year + " " + month + " " + day + " " + hour + " " + minute + " " + second
+      user2 = uservalue
+      del user2['Tip']
+      user2['Tip'] = thetime
+      delete = {"_id": uservalue['_id']}
+      cooldowncol.delete_one(delete)
+      cooldowncol.insert_many([user2])
+  return tips
