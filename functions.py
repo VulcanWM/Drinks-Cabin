@@ -11,6 +11,8 @@ usersdb = mainclient.Profiles
 profilescol = usersdb.Users
 cooldowndb = mainclient.Cooldown
 cooldowncol = cooldowndb.Cooldown
+hourlydb = mainclient.Hourly
+hourlycol = hourlydb.Hourly
 
 def addcookie(key, value):
   session[key] = value
@@ -34,6 +36,7 @@ def makeaccount(username, password):
     "Password": passhash,
     "Money": "0.00",
     "Drinks": 0,
+    "Hourly": 0,
     "Menu": [{"Type": "Popular", "Name": "Water", "Price": "1.00"}]
   }]
   profilescol.insert_many(document)
@@ -295,3 +298,50 @@ def tipfunc(username):
       cooldowncol.delete_one(delete)
       cooldowncol.insert_many([user2])
   return tips
+
+def checkhourly():
+  for hourly in hourlycol.find():
+    if hourly['_id'] == 1:
+      return hourly['Hourly']
+    
+def makeaccounthr(username):
+  document = [{
+    "Username": username,
+    "Boosts": [],
+    "Employees": [],
+    "Upgrades": [],
+    "Decorations": []
+  }]
+  hourlycol.insert_many(document)
+
+decorations = {"Balloons": "5.00", "Ornaments": "10.00", "Disco Lights":"30.00", "Paintings": "100.00", "Christmas Tree": "400.00"}
+upgrades = {}
+employees = {}
+
+def getpriceitem(username, item):
+  if item not in decorations and item not in upgrades:
+    return False
+  for user in hourlycol.find():
+    if user['_id'] != 1:
+      if user['Username'] == username:
+        if item in user['Decorations']:
+          amount = user['Decorations'].get(item, 0)
+        if item in user['Upgrades']:
+          amount = user['Upgrades'].get(item, 0) 
+  if decorations.get(item, None) != None:
+    hourly = decorations[item]
+  if upgrades.get(item, None) != None:
+    hourly = upgrades[item]
+  price = (1 + amount) * (20 * hourly)
+  return price
+
+def getpriceempl(username, name):
+  if item not in employees:
+    return False
+  for user in hourlycol.find():
+    if user['_id'] != 1:
+      if user['Username'] == username:
+        amount = user['Employees'].get(item, 0)
+  hourly = employees[name]
+  price = (1 + amount) * (25 * hourly)
+  return price

@@ -3,7 +3,7 @@ import os
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr
 
 @app.route("/")
 def main():
@@ -40,6 +40,7 @@ def signup():
       return render_template("error.html", error="The two passwords don't match!")
     makeaccount(username, password)
     makeaccountcd(username)
+    makeaccounthr(username)
     addcookie("User", username)
     return redirect("/")
 
@@ -54,6 +55,8 @@ def logout():
 def work():
   if getcookie("User") == False:
     return render_template("error.html", error="You have not logged in!")
+  if checkhourly() == True:
+    return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
   every = workfunc(getcookie("User"))
   if every == False:
     return render_template("error.html", error="Chill, enjoy your break!")
@@ -63,6 +66,8 @@ def work():
 def tips():
   if getcookie("User") == False:
     return render_template("error.html", error="You have not logged in!")
+  if checkhourly() == True:
+    return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
   tip = tipfunc(getcookie("User"))
   if tip == False:
     return render_template("error.html", error="Don't shoo away your customers by asking them for tips!")
@@ -72,6 +77,8 @@ def tips():
 def daily():
   if getcookie("User") == False:
     return render_template("error.html", error="You have not logged in!")
+  if checkhourly() == True:
+    return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
   daily = dailyfunc(getcookie("User"))
   if daily == False:
     return render_template("error.html", error="Don't be too greedy!")

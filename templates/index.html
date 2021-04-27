@@ -36,6 +36,7 @@
     <h3>Stats</h3>
     <p>Money: ∂{{user['Money']}}</p>
     <p>Drinks: {{user['Drinks']}}</p>
+    <p>Hourly Income: ∂{{user['Hourly']}}.00</p>
     <h3>Menu</h3>
     {% for item in user['Menu'] %}
       {% if item['Name'] == "Water" %}

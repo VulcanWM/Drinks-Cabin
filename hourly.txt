@@ -1,0 +1,5 @@
+Upgrades
+New Paint (1/10) Cost: $1,000 Boost: +$10/hr ID: paint  New Furniture (0/10) Cost: $600 Boost: +$20/hr ID: furniture  Nicer Bathrooms (0/8) Cost: $800 Boost: +$25/hr ID: bathrooms  Billboard (0/10) Cost: $1,000 Boost: +$35/hr ID: billboard  Better Appliances (0/8) Cost: $1,200 Boost: make more work $ ID: appliances  Cooler Tip Jar (0/8) Cost: $500 Boost: collect more tips ID: tipjar ━━━━━━━━━━━━━━ :dollar: Balance: $93,064 
+
+Employees
+Apprentice Chef (0/10) Cost: $250 Boost: +$10/hr ID: apprentice  Cook (0/10) Cost: $600 Boost: +$20/hr ID: cook  Advertiser (0/10) Cost: $700 Boost: +$20/hr ID: advertiser  Greeter (0/10) Cost: $800 Boost: +$25/hr ID: greeter  Sous Chef (0/10) Cost: $1,200 Boost: +$40/hr ID: sous  Head Chef (0/8) Cost: $2,000 Boost: +$65/hr ID: head  Executive Chef (0/8) Cost: $5,000 Boost: +$150/hr ID: executive ━━━━━━━━━━━━━ :dollar: Balance: $93,064
