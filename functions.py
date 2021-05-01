@@ -467,3 +467,24 @@ def buyempl(username, item):
       profilescol.delete_one(delete)
       profilescol.insert_many([user2])
   return True
+
+def getamountup(username, item):
+  for user in hourlycol.find():
+    if user['_id'] != 1:
+      if user['Username'] == username:
+        upgrade = user['Upgrades'].get(item, 0)
+        return upgrade
+
+def getamountdeco(username, item):
+  for user in hourlycol.find():
+    if user['_id'] != 1:
+      if user['Username'] == username:
+        upgrade = user['Decorations'].get(item, 0)
+        return upgrade
+
+def getamountempl(username, item):
+  for user in hourlycol.find():
+    if user['_id'] != 1:
+      if user['Username'] == username:
+        upgrade = user['Employees'].get(item, 0)
+        return upgrade

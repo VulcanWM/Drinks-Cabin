@@ -3,7 +3,7 @@ import os
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup
 from lists import decorations, employees, upgrades
 
 @app.route("/")
@@ -15,13 +15,13 @@ def main():
   ready = getusercd(cookie)
   useremployees = []
   for employee in employees:
-    useremployees.append({"Name": employee, "Boost": f"₹{employees[employee]}/hr", "Price": f"₹{str(getpriceempl(cookie, employee))}0"})
+    useremployees.append({"Name": employee, "Boost": f"₹{employees[employee]}/hr", "Price": f"₹{str(getpriceempl(cookie, employee))}0", "Amount": getamountempl(getcookie("User"), employee)})
   userdecos = []
   for deco in decorations:
-    userdecos.append({"Name": deco, "Boost": f"₹{decorations[deco]}/hr", "Price": f"₹{str(getpricedeco(cookie, deco))}0"})
+    userdecos.append({"Name": deco, "Boost": f"₹{decorations[deco]}/hr", "Price": f"₹{str(getpricedeco(cookie, deco))}0", "Amount": getamountdeco(getcookie("User"), deco)})
   userupgrades = []
   for up in upgrades:
-    userupgrades.append({"Name": up, "Boost": f"₹{upgrades[up]}/hr", "Price": f"₹{str(getpriceup(cookie, up))}0"})
+    userupgrades.append({"Name": up, "Boost": f"₹{upgrades[up]}/hr", "Price": f"₹{str(getpriceup(cookie, up))}0", "Amount": getamountup(getcookie("User"), up)})
   return render_template("index.html", cookie=cookie, user=user, ready=ready, employees=useremployees, decorations=userdecos, upgrades=userupgrades)
 
 @app.route("/login", methods=['POST', 'GET'])

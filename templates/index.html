@@ -73,7 +73,7 @@
   <h2>Employees</h2>
 	<div class="expand">
     {% for employee in employees %}
-      <p><b>{{employee['Name']}}</b></p>
+      <p><b>{{employee['Name']}}</b> ({{employee['Amount']}}/10) </p>
       <p>Price: {{employee['Price']}}</p>
       <p>Boost: {{employee['Boost']}}</p>
     {% endfor %}
@@ -84,7 +84,7 @@
   <h2>Decorations</h2>
 	<div class="expand">
     {% for decoration in decorations %}
-      <p><b>{{decoration['Name']}}</b></p>
+      <p><b>{{decoration['Name']}}</b> ({{decoration['Amount']}}/10) </p>
       <p>Price: {{decoration['Price']}}</p>
       <p>Boost: {{decoration['Boost']}}</p>
     {% endfor %}
@@ -95,7 +95,7 @@
   <h2>Upgrades</h2>
 	<div class="expand">
     {% for up in upgrades %}
-      <p><b>{{up['Name']}}</b></p>
+      <p><b>{{up['Name']}}</b> ({{up['Amount']}}/10) </p>
       <p>Price: {{up['Price']}}</p>
       <p>Boost: {{up['Boost']}}</p>
     {% endfor %}
