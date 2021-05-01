@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/static/expand.css" />
+<link rel="stylesheet" href="/static/index.css" />
 {% if cookie == "False" %}
 
 <div class="expandable section">
@@ -39,7 +40,7 @@
     <p>Hourly Income: ₹{{user['Hourly']}}.00</p>
     <h3>Menu</h3>
     {% for item in user['Menu'] %}
-      {% if item['Name'] == "Water" %}
+      {% if item['Name'] == "Water" or item['Name'] == "Bubble Tea" %}
         {% set emoji = "🥤" %}
       {% elif item['Type'] == "Popular" %}
         {% set emoji = "🫖" %}
@@ -113,6 +114,42 @@
         <option value="decorations">Decorations</option>
         <option value="upgrades">Upgrades</option>
         <option value="employees">Employees</option>
+      </select><br><br>
+      <button type="submit">Submit</button>
+    </form>
+	</div>
+</div>
+
+<div class="expandable section">
+  <h2>Buy menu slot</h2>
+	<div class="expand">
+    <form action="{{ url_for('buymenuslot') }}" method="POST">
+      <label for="title">Drink name:</label><br>
+      <select id="title" name="title" required>
+        <option value="Beer">Beer for ₹4000000.00</option>
+        <option value="Wine">Wine for ₹4000000.00</option>
+        <option value="Vodka">Vodka for ₹4000000.00</option>
+        <option value="Whiskey">Whiskey for ₹4000000.00</option>
+        <option value="Rum">Rum for ₹4000000.00</option>
+        <option value="Brandy">Brandy for ₹4000000.00</option>
+        <option value="Gin">Gin for ₹4000000.00</option>
+        <option value="Coca Cola">Coca Cola for ₹3000000.00</option>
+        <option value="Fanta Orange">Fanta Orange for ₹3000000.00</option>
+        <option value="Fanta Lemon">Fanta Lemon for ₹3000000.00</option>
+        <option value="Lemonade">Lemonade for ₹3000000.00</option>
+        <option value="Sparkling Water">Sparkling Water for ₹3000000.00</option>
+        <option value="Pepsi">Pepsi for ₹3000000.00</option>
+        <option value="7 Up">7 Up for ₹3000000.00</option>
+        <option value="Dr Pepper">Dr Pepper for ₹3000000.00</option>
+        <option value="Apple Juice">Apple Juice for ₹2000000.00</option>
+        <option value="Orange Juice">Orange Juice for ₹2000000.00</option>
+        <option value="Pineapple Juice">Pineapple Juice for ₹2000000.00</option>
+        <option value="Grape Juice">Grape Juice for ₹2000000.00</option>
+        <option value="Cranberry Juice">Cranberry Juice for ₹2000000.00</option>
+        <option value="Tea">Tea  for ₹1000000.00</option>
+        <option value="Coffee">Coffee for ₹1000000.00</option>
+        <option value="Hot Chocolate">Hot Chocolate for ₹1000000.00</option>
+        <option value="Bubble Tea">Bubble Tea for ₹1000000.00</option>
       </select><br><br>
       <button type="submit">Submit</button>
     </form>

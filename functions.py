@@ -180,15 +180,14 @@ def workfunc(username):
   for item in user['Menu']:
     amount = random.randint(1,100)
     earned = float(item['Price']) * amount
-    for item in user['Menu']:
-      if item['Name'] == "Water":
-        emoji = "🥤"
-      elif item['Type'] == "Popular":
-        emoji = "🫖"
-      elif item['Type'] == "Juice":
-        emoji = "🍹"
-      elif item['Type'] == "Alcoholic":
-        emoji = "🍺"
+    if item['Name'] == "Water" or item['Name'] == "Bubble Tea":
+      emoji = "🥤"
+    elif item['Type'] == "Popular":
+      emoji = "🫖"
+    elif item['Type'] == "Juice":
+      emoji = "🍹"
+    elif item['Type'] == "Alcoholic":
+      emoji = "🍺"
     theitem = {"Amount": str(amount), "Item": item["Name"], "Earned": str(earned) + "0", "Emoji": emoji}
     stuff.append(theitem)
     amountto = amountto + amount
@@ -488,3 +487,53 @@ def getamountempl(username, item):
       if user['Username'] == username:
         upgrade = user['Employees'].get(item, 0)
         return upgrade
+  
+def buymenuitem(username, item):
+  drink = {}
+  with open('drinks/alcoholic.txt') as f:
+    lines = f.readlines()
+  for line in lines:
+    drink[line] = "Alcoholic"
+  with open('drinks/fizzy.txt') as f:
+    lines = f.readlines()
+  for line in lines:
+    drink[line] = "Fizzy"
+  with open('drinks/juices.txt') as f:
+    lines = f.readlines()
+  for line in lines:
+    drink[line] = "Juices"
+  with open('drinks/popular.txt') as f:
+    lines = f.readlines()
+  for line in lines:
+    drink[line] = "Popular"
+  if f"{item}\n" not in drink:
+    return "This drink item cannot be added to the menu!"
+  if drink[f"{item}\n"] == "Popular":
+    price = 1000000.00
+  if drink[f"{item}\n"] == "Juices":
+    price = 2000000.00
+  if drink[f"{item}\n"] == "Fizzy":
+    price = 3000000.00
+  if drink[f"{item}\n"] == "Alcoholic":
+    price = 4000000.00
+  if float(getuser(username)['Money']) < float(price):
+    return "You don't have enough money to add this to your menu!"
+  items = []
+  itemdict = getuser(username)['Menu']
+  for item1 in itemdict:
+    items.append(item1['Name'])
+  if item in items:
+    return "You already have this in your menu!"
+  for user in profilescol.find():
+    if user['Username'] == username:
+      user2 = user
+      money = user2['Money']
+      del user2['Money']
+      user2['Money'] = str(float(money) - float(price)) + "0"
+      menu = user2['Menu']
+      menu.append({"Type": drink[f"{item}\n"], "Name": item, "Price": f"{str(price/1000000)}0"})
+      delete = {"_id": user['_id']}
+      profilescol.delete_one(delete)
+      profilescol.insert_many([user2])
+  return True
+# print(buymenuitem("hi", "Beer"))

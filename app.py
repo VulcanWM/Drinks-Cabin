@@ -3,7 +3,7 @@ import os
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem
 from lists import decorations, employees, upgrades
 
 @app.route("/")
@@ -121,3 +121,16 @@ def shop():
         return render_template("success.html", item=request.form['title'], type='hire')
       else:
         return render_template("error.html", error=func)
+
+@app.route("/buymenuslot", methods=['POST', 'GET'])
+def buymenuslot():
+  if request.method == "POST":
+    if getcookie("User") == False:
+      return render_template("error.html", error="You have not logged in!")
+    if checkhourly() == True:
+      return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+    item = request.form['title']
+    func = buymenuitem(getcookie("User"), item)
+    if func == True:
+      return render_template("success.html", type="buymenu", item=item)
+    return render_template("error.html", error=func)
