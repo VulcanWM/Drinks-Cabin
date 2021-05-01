@@ -3,14 +3,26 @@ import os
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup
+from lists import decorations, employees, upgrades
 
 @app.route("/")
 def main():
   cookie = str(getcookie("User"))
+  if cookie == False:
+    return render_template("index.html", cookie=cookie)
   user = getuser(cookie)
   ready = getusercd(cookie)
-  return render_template("index.html", cookie=cookie, user=user, ready=ready)
+  useremployees = []
+  for employee in employees:
+    useremployees.append({"Name": employee, "Boost": f"₹{employees[employee]}/hr", "Price": f"₹{str(getpriceempl(cookie, employee))}0"})
+  userdecos = []
+  for deco in decorations:
+    userdecos.append({"Name": deco, "Boost": f"₹{decorations[deco]}/hr", "Price": f"₹{str(getpricedeco(cookie, deco))}0"})
+  userupgrades = []
+  for up in upgrades:
+    userupgrades.append({"Name": up, "Boost": f"₹{upgrades[up]}/hr", "Price": f"₹{str(getpriceup(cookie, up))}0"})
+  return render_template("index.html", cookie=cookie, user=user, ready=ready, employees=useremployees, decorations=userdecos, upgrades=userupgrades)
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
@@ -83,3 +95,29 @@ def daily():
   if daily == False:
     return render_template("error.html", error="Don't be too greedy!")
   return render_template("success.html", type="daily", daily=daily)
+
+@app.route("/shop", methods=['POST', 'GET'])
+def shop():
+  if request.method == "POST":
+    if getcookie("User") == False:
+      return render_template("error.html", error="You have not logged in!")
+    if checkhourly() == True:
+      return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+    if request.form['category'] == "decorations":
+      func = buydeco(getcookie("User"), request.form['title'])
+      if func == True:
+        return render_template("success.html", item=request.form['title'], type='buy')
+      else:
+        return render_template("error.html", error=func)
+    if request.form['category'] == "upgrades":
+      func = buyup(getcookie("User"), request.form['title'])
+      if func == True:
+        return render_template("success.html", item=request.form['title'], type='buy')
+      else:
+        return render_template("error.html", error=func)
+    if request.form['category'] == "employees":
+      func = buyempl(getcookie("User"), request.form['title'])
+      if func == True:
+        return render_template("success.html", item=request.form['title'], type='hire')
+      else:
+        return render_template("error.html", error=func)

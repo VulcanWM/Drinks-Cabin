@@ -3,11 +3,15 @@
   {% for item in every['Stuff'] %}
     <p>{{item['Amount']}} {{item['Emoji']}} {{item['Item']}} for {{item['Earned']}}</p>
   {% endfor %}
-  <p>Amount you earned in total: ∂{{every['Total']}}</p>
+  <p>Amount you earned in total: ₹{{every['Total']}}</p>
 {% elif type == "tip" %}
-  <p>You collected ∂{{tip}}.00 while collecting tips</p>
+  <p>You collected ₹{{tip}}.00 while collecting tips</p>
 {% elif type == "daily" %}
   <p>{{daily}}</p>
+{% elif type == "buy" %}
+  <p>You bought a {{item}}</p>
+{% elif type == "hire" %}
+  <p>You hired a {{empl}}</p>
 {% endif %}
 <br>
 <p>Click <a href="/">here</a> to go back to the main page</p>

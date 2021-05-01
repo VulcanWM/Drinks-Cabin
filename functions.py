@@ -5,6 +5,7 @@ import random
 import os
 from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
+from lists import decorations, upgrades, employees
 clientm = os.getenv("clientm")
 mainclient = pymongo.MongoClient(clientm)
 usersdb = mainclient.Profiles
@@ -235,7 +236,7 @@ def dailyfunc(username):
   for uservalue in profilescol.find():
     if uservalue['Username'] == username:
       user2 = uservalue
-      newam = str(float(user2['Money']) + float(25000.0))
+      newam = str(float(user2['Money']) + float(500.0))
       newam = str(newam) + "0"
       del user2['Money']
       user2['Money'] = newam
@@ -261,7 +262,7 @@ def dailyfunc(username):
       delete = {"_id": uservalue['_id']}
       cooldowncol.delete_one(delete)
       cooldowncol.insert_many([user2])
-  return "You have claimed your ∂25000.00 daily reward!"
+  return "You have claimed your ₹25000.00 daily reward!"
 
 def tipfunc(username):
   if getusercd(username)[1] != "Ready":
@@ -307,41 +308,162 @@ def checkhourly():
 def makeaccounthr(username):
   document = [{
     "Username": username,
-    "Boosts": [],
-    "Employees": [],
-    "Upgrades": [],
-    "Decorations": []
+    "Boosts": {},
+    "Employees": {},
+    "Upgrades": {},
+    "Decorations": {}
   }]
   hourlycol.insert_many(document)
 
-decorations = {"Balloons": "5.00", "Ornaments": "10.00", "Disco Lights":"30.00", "Paintings": "100.00", "Christmas Tree": "400.00"}
-upgrades = {}
-employees = {}
-
-def getpriceitem(username, item):
-  if item not in decorations and item not in upgrades:
-    return False
-  for user in hourlycol.find():
-    if user['_id'] != 1:
-      if user['Username'] == username:
-        if item in user['Decorations']:
-          amount = user['Decorations'].get(item, 0)
-        if item in user['Upgrades']:
-          amount = user['Upgrades'].get(item, 0) 
-  if decorations.get(item, None) != None:
-    hourly = decorations[item]
-  if upgrades.get(item, None) != None:
-    hourly = upgrades[item]
-  price = (1 + amount) * (20 * hourly)
-  return price
-
 def getpriceempl(username, name):
-  if item not in employees:
+  if name not in employees:
     return False
   for user in hourlycol.find():
     if user['_id'] != 1:
       if user['Username'] == username:
-        amount = user['Employees'].get(item, 0)
-  hourly = employees[name]
-  price = (1 + amount) * (25 * hourly)
-  return price
+        if name in user['Employees']:
+          amount = user['Employees'][name]
+          if int(amount) == 10:
+            return "Hit max amount"
+        else:
+          amount = 0
+        hourly = employees[name]
+        price = (1 + amount) * (25 * float(hourly))
+        return price
+
+def getpricedeco(username, name):
+  if name not in decorations:
+    return False
+  for user in hourlycol.find():
+    if user['_id'] != 1:
+      if user['Username'] == username:
+        if name in user['Decorations']:
+          amount = user['Decorations'][name]
+          if int(amount) == 10:
+            return "Hit max amount"
+        else:
+          amount = 0
+        hourly = decorations[name]
+        price = (1 + amount) * (25 * float(hourly))
+        return price
+
+def getpriceup(username, name):
+  if name not in upgrades:
+    return False
+  for user in hourlycol.find():
+    if user['_id'] != 1:
+      if user['Username'] == username:
+        if name in user['Upgrades']:
+          amount = user['Upgrades'][name]
+          if int(amount) == 10:
+            return "Hit max amount"
+        else:
+          amount = 0
+        hourly = upgrades[name]
+        price = (1 + amount) * (25 * float(hourly))
+        return price
+
+def buydeco(username, item):
+  price = getpricedeco(username, item)
+  if price == False:
+    return "This item doesn't exist"
+  if price == "Hit max amount":
+    return f"You cannot have more than 10 of {item}"
+  if float(getuser(username)['Money']) < float(price):
+    return "You don't have enough money to buy this item!"
+  for user in hourlycol.find():
+    if user['_id'] != 1 and user['Username'] == username:
+      user2 = user
+      if item in user['Decorations']:
+        decodict = user['Decorations']
+        number = user2['Decorations'][item]
+        del user2['Decorations'][item]
+        user2['Decorations'][item] = number + 1
+      else:
+        user2['Decorations'][item] = 1
+      delete = {"_id": user['_id']}
+      hourlycol.delete_one(delete)
+      hourlycol.insert_many([user2])
+  for user in profilescol.find():
+    if user['Username'] == username:
+      user2 = user
+      money = user2['Money']
+      del user2['Money']
+      hourly = user2['Hourly']
+      del user2['Hourly']
+      user2['Hourly'] = hourly + int(decorations[item].split(".")[0])
+      user2['Money'] = str(float(money) - float(price)) + "0"
+      delete = {"_id": user['_id']}
+      profilescol.delete_one(delete)
+      profilescol.insert_many([user2])
+  return True
+
+def buyup(username, item):
+  price = getpriceup(username, item)
+  if price == False:
+    return "This item doesn't exist"
+  if price == "Hit max amount":
+    return f"You cannot have more than 10 of {item}"
+  if float(getuser(username)['Money']) < float(price):
+    return "You don't have enough money to buy this item!"
+  for user in hourlycol.find():
+    if user['_id'] != 1 and user['Username'] == username:
+      user2 = user
+      if item in user['Upgrades']:
+        decodict = user['Upgrades']
+        number = user2['Upgrades'][item]
+        del user2['Upgrades'][item]
+        user2['Upgradess'][item] = number + 1
+      else:
+        user2['Upgrades'][item] = 1
+      delete = {"_id": user['_id']}
+      hourlycol.delete_one(delete)
+      hourlycol.insert_many([user2])
+  for user in profilescol.find():
+    if user['Username'] == username:
+      user2 = user
+      money = user2['Money']
+      del user2['Money']
+      hourly = user2['Hourly']
+      del user2['Hourly']
+      user2['Hourly'] = hourly + int(upgrades[item].split(".")[0])
+      user2['Money'] = str(float(money) - float(price)) + "0"
+      delete = {"_id": user['_id']}
+      profilescol.delete_one(delete)
+      profilescol.insert_many([user2])
+  return True
+
+def buyempl(username, item):
+  price = getpriceempl(username, item)
+  if price == False:
+    return "This employee type doesn't exist"
+  if price == "Hit max amount":
+    return f"You cannot have more than 10 of {item}"
+  if float(getuser(username)['Money']) < float(price):
+    return "You don't have enough money to hire this employee type"
+  for user in hourlycol.find():
+    if user['_id'] != 1 and user['Username'] == username:
+      user2 = user
+      if item in user['Employees']:
+        decodict = user['Employees']
+        number = user2['Employees'][item]
+        del user2['Employees'][item]
+        user2['Employees'][item] = number + 1
+      else:
+        user2['Employees'][item] = 1
+      delete = {"_id": user['_id']}
+      hourlycol.delete_one(delete)
+      hourlycol.insert_many([user2])
+  for user in profilescol.find():
+    if user['Username'] == username:
+      user2 = user
+      money = user2['Money']
+      del user2['Money']
+      hourly = user2['Hourly']
+      del user2['Hourly']
+      user2['Hourly'] = hourly + int(employees[item].split(".")[0])
+      user2['Money'] = str(float(money) - float(price)) + "0"
+      delete = {"_id": user['_id']}
+      profilescol.delete_one(delete)
+      profilescol.insert_many([user2])
+  return True

@@ -34,9 +34,9 @@
   <h2>{{cookie}}</h2>
 	<div class="expand">
     <h3>Stats</h3>
-    <p>Money: ∂{{user['Money']}}</p>
+    <p>Money: ₹{{user['Money']}}</p>
     <p>Drinks: {{user['Drinks']}}</p>
-    <p>Hourly Income: ∂{{user['Hourly']}}.00</p>
+    <p>Hourly Income: ₹{{user['Hourly']}}.00</p>
     <h3>Menu</h3>
     {% for item in user['Menu'] %}
       {% if item['Name'] == "Water" %}
@@ -48,7 +48,7 @@
       {% elif item['Type'] == "Alcoholic" %}
         {% set emoji = "🍺" %}
       {% endif %}
-      <p>{{emoji}} {{item['Name']}} : ∂{{item['Price']}}</p>
+      <p>{{emoji}} {{item['Name']}} : ₹{{item['Price']}}</p>
     {% endfor %}
     <h3>Cooldowns</h3>
     <p>Work: {{ready[0]}}</p>
@@ -67,6 +67,56 @@
     <br>
     <a href="/daily">Daily</a>
   </div>
+</div>
+
+<div class="expandable section">
+  <h2>Employees</h2>
+	<div class="expand">
+    {% for employee in employees %}
+      <p><b>{{employee['Name']}}</b></p>
+      <p>Price: {{employee['Price']}}</p>
+      <p>Boost: {{employee['Boost']}}</p>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="expandable section">
+  <h2>Decorations</h2>
+	<div class="expand">
+    {% for decoration in decorations %}
+      <p><b>{{decoration['Name']}}</b></p>
+      <p>Price: {{decoration['Price']}}</p>
+      <p>Boost: {{decoration['Boost']}}</p>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="expandable section">
+  <h2>Upgrades</h2>
+	<div class="expand">
+    {% for up in upgrades %}
+      <p><b>{{up['Name']}}</b></p>
+      <p>Price: {{up['Price']}}</p>
+      <p>Boost: {{up['Boost']}}</p>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="expandable section">
+  <h2>Shop</h2>
+	<div class="expand">
+    <form action="{{ url_for('shop') }}" method="POST">
+      <label for="title">Item name:</label><br>
+      <input type="text" id="title" name="title" max="30" min="2" required><br><br>
+      <label for="category">Category name:</label><br>
+      <select id="category" name="category" required>
+        <option value="decorations">Decorations</option>
+        <option value="upgrades">Upgrades</option>
+        <option value="employees">Employees</option>
+      </select><br><br>
+      <button type="submit">Submit</button>
+    </form>
+	</div>
 </div>
 
 <h2><a href="/logout">Logout</a></h2>
