@@ -3,7 +3,7 @@ import os
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly
 from lists import decorations, employees, upgrades
 
 @app.route("/")
@@ -22,7 +22,7 @@ def main():
   userupgrades = []
   for up in upgrades:
     userupgrades.append({"Name": up, "Boost": f"₹{upgrades[up]}/hr", "Price": f"₹{str(getpriceup(cookie, up))}0", "Amount": getamountup(getcookie("User"), up)})
-  return render_template("index.html", cookie=cookie, user=user, ready=ready, employees=useremployees, decorations=userdecos, upgrades=userupgrades)
+  return render_template("index.html", cookie=cookie, user=user, ready=ready, employees=useremployees, decorations=userdecos, upgrades=userupgrades, franstats=getuserfranstats(cookie), franhourly=getuserfranhourly(cookie))
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():

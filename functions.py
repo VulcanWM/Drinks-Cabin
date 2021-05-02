@@ -4,6 +4,7 @@ import datetime
 import random
 import os
 from flask import session
+from string import ascii_letters, digits
 from werkzeug.security import generate_password_hash, check_password_hash
 from lists import decorations, upgrades, employees
 clientm = os.getenv("clientm")
@@ -14,6 +15,9 @@ cooldowndb = mainclient.Cooldown
 cooldowncol = cooldowndb.Cooldown
 hourlydb = mainclient.Hourly
 hourlycol = hourlydb.Hourly
+franchisedb = mainclient.Franchise
+fstatscol = franchisedb.Stats
+fhourlycol = franchisedb.Hourly
 
 def addcookie(key, value):
   session[key] = value
@@ -536,4 +540,61 @@ def buymenuitem(username, item):
       profilescol.delete_one(delete)
       profilescol.insert_many([user2])
   return True
-# print(buymenuitem("hi", "Beer"))
+
+def makefranchise(owner, tag, name):
+  if float(getuser(owner)['Money']) < 1000000.0:
+    return "You don't have enough money to create a franchise!"
+  franowners = []
+  for franchise in fstatscol.find():
+    for member in franchise['Members']:
+      franowners.append(member)
+  if owner in franowners:
+    return "You are already in a franchise!"
+  if str(len(tag)) != "3":
+    return "Your tag has to be 3 letters or numbers"
+  if set(tag).difference(ascii_letters + digits):
+    return "Your tag cannot contain characters!"
+  if len(name) < 3:
+    return "Your franchise name must have more than 3 letters!"
+  if len(name) > 30:
+    return "Your franchise name must have less than 30 letters!"
+  for user in profilescol.find():
+    if user['Username'] == owner:
+      user2 = user
+      money = user2['Money']
+      del user2['Money']
+      user2['Money'] = str(float(money) - 1000000.0) + "0"
+      delete = {"_id": user['_id']}
+      profilescol.delete_one(delete)
+      profilescol.insert_many([user2])
+  document = [{
+    "Name": name,
+    "Tag": tag,
+    "Members": {owner: "Owner"},
+    "Drinks": 0,
+    "Money": "0.00",
+    "Hourly": 0,
+    "Menu": [{"Type": "Popular", "Name": "Water", "Price": "1.00"}]
+  }]
+  fstatscol.insert_many(document)
+  document = [{
+    "Franchise": tag,
+    "Boosts": {},
+    "Employees": {},
+    "Upgrades": {},
+    "Decorations": {}
+  }]
+  fhourlycol.insert_many(document)
+
+# print(makefranchise("hi", "DCO", "Drinks Cabin Official"))
+
+def getuserfranstats(username):
+  for fran in fstatscol.find():
+    if username in fran['Members']:
+      return fran
+
+def getuserfranhourly(username):
+  franname = getuserfranstats(username)['Tag']
+  for fran in fhourlycol.find():
+    if fran['Franchise'] == franname:
+      return fran
