@@ -3,7 +3,7 @@ import os
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise
 from lists import decorations, employees, upgrades
 
 @app.route("/")
@@ -133,4 +133,18 @@ def buymenuslot():
     func = buymenuitem(getcookie("User"), item)
     if func == True:
       return render_template("success.html", type="buymenu", item=item)
+    return render_template("error.html", error=func)
+
+@app.route("/makefranchise", methods=['POST', 'GET'])
+def makefranchiseapp():
+  if request.method == "POST":
+    if getcookie("User") == False:
+      return render_template("error.html", error="You have not logged in!")
+    if checkhourly() == True:
+      return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+    name = request.form['name']
+    tag = request.form['tag']
+    func = makefranchise(getcookie("User"), tag, name)
+    if func == True:
+      return render_template("success.html", type="makefranchise", name=name, tag=tag)
     return render_template("error.html", error=func)

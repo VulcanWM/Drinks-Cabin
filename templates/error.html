@@ -1,6 +1,48 @@
 <html>
-<body>
-<p>{{error}}</p>
-<br>
-<p>Click <a href="/">here</a> to go back to the main page</p>
-</body>
+  <body >
+    <link rel="stylesheet" href="/static/error.css" />
+    <link rel="stylesheet" href="/static/expand.css" />
+    <center>
+      <p class="error">{{error}}</p>
+      <br>
+      <p>Click <a href="/">here</a> to go back to the main page</p>
+      <div class="expandable section">
+        <h2>signup</h2>
+        <div class="expand">
+          <div class="login-form-body">
+            <div class="login-form-heading">
+              <h1>signup</h1>
+              <br>
+            </div>
+            <div class="login-form-form">
+              <form method="POST" action="../signup">
+                <input class="login-form-input" placeholder="username" name="names">
+                <input class="login-form-input" placeholder="password" type="password" name="passwords">
+                <input class="login-form-input" placeholder="confirm password" type="password" name="passwordagain"><br>
+                <button class="login-form-button">signup</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="expandable section">
+        <h2>login</h2>
+        <div class="expand">
+          <div class="login-form-body">
+            <div class="login-form-heading">
+              <h1>login</h1>
+              <br>
+            </div>
+            <div class="login-form-form">
+              <form method="POST" action="../login">
+                <input class="login-form-input" placeholder="username" name="namelogin">
+                <input class="login-form-input" placeholder="password" type="password" name="passwords"><br>
+                <button class="login-form-button">signup</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </center>
+    <script src="/static/expand.js"></script>
+  </body>

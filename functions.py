@@ -585,6 +585,7 @@ def makefranchise(owner, tag, name):
     "Decorations": {}
   }]
   fhourlycol.insert_many(document)
+  return True
 
 # print(makefranchise("hi", "DCO", "Drinks Cabin Official"))
 
