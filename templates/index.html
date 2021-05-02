@@ -55,6 +55,7 @@ a:hover {
     <p>Money: ₹{{user['Money']}}</p>
     <p>Drinks: {{user['Drinks']}}</p>
     <p>Hourly Income: ₹{{user['Hourly']}}.00</p>
+    <p>Franchise: {{franstats['Name']}} [{{franstats['Tag']}}]
     <h3>Menu</h3>
     {% for item in user['Menu'] %}
       {% if item['Name'] == "Water" or item['Name'] == "Bubble Tea" %}

@@ -592,9 +592,12 @@ def getuserfranstats(username):
   for fran in fstatscol.find():
     if username in fran['Members']:
       return fran
+    return None
 
 def getuserfranhourly(username):
-  franname = getuserfranstats(username)['Tag']
+  franname = getuserfranstats(username)
+  if franname == None:
+    return None
   for fran in fhourlycol.find():
-    if fran['Franchise'] == franname:
+    if fran['Franchise'] == franname['Tag']:
       return fran
