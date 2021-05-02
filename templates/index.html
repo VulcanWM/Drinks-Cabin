@@ -1,205 +1,194 @@
 <html>
-<body>
-<style>
-body {
-  color: #81CFF2;
-  background-color: #121212;
-  font-family: Verdana, sans-serif;
-}
-a {
-  color: #81CFF2;
-  text-decoration: none;
-}
-a:hover {
-  color: #77e07e;
-  text-decoration: none;
-}
-</style>
-<link rel="stylesheet" href="/static/index.css" />
-<link rel="stylesheet" href="/static/expand.css" />
-{% if cookie == "False" %}
-
-<div class="expandable section">
-  <h2>Signup</h2>
-	<div class="expand">
-    <form action="{{ url_for('signup') }}" method="POST">
-      <label for="names">Cabin name:</label><br>
-      <input type="text" id="names" name="names" required><br><br>
-      <label for="passwords">Password:</label><br>
-      <input type="text" id="passwords" name="passwords" required><br><br>
-      <label for="passwordagain">Password again:</label><br>
-      <input type="text" id="passwordagain" name="passwordagain" required><br><br>
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-</div>
-
-<div class="expandable section">
-  <h2>Login</h2>
-	<div class="expand">
-    <form action="{{ url_for('login') }}" method="POST">
-      <label for="namelogin">Cabin name:</label><br>
-      <input type="text" id="namelogin" name="namelogin" required><br><br>
-      <label for="passwordl">Password:</label><br>
-      <input type="text" id="passwordl" name="passwordl" required><br><br>
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-</div>
-
-{% else %}
-<div class="expandable section">
-  <h2>{{cookie}}</h2>
-	<div class="expand">
-    <h3>Stats</h3>
-    <p>Money: ₹{{user['Money']}}</p>
-    <p>Drinks: {{user['Drinks']}}</p>
-    <p>Hourly Income: ₹{{user['Hourly']}}.00</p>
-    <h3>Menu</h3>
-    {% for item in user['Menu'] %}
-      {% if item['Name'] == "Water" or item['Name'] == "Bubble Tea" %}
-        {% set emoji = "🥤" %}
-      {% elif item['Type'] == "Popular" %}
-        {% set emoji = "🫖" %}
-      {% elif item['Type'] == "Juice" %}
-        {% set emoji = "🍹" %}
-      {% elif item['Type'] == "Alcoholic" %}
-        {% set emoji = "🍺" %}
-      {% endif %}
-      <p>{{emoji}} {{item['Name']}} : ₹{{item['Price']}}</p>
-    {% endfor %}
-    <h3>Cooldowns</h3>
-    <p>Work: {{ready[0]}}</p>
-    <p>Tips: {{ready[1]}}</p>
-    <p>Overtime: {{ready[2]}}</p>
-    <p>Daily: {{ready[3]}}</p>
-  </div>
-</div>
-
-<div class="expandable section">
-  <h2>Commands</h2>
-	<div class="expand">
-    <a href="/work">Work</a>
-    <br>
-    <a href="/tips">Tip</a>
-    <br>
-    <a href="/daily">Daily</a>
-  </div>
-</div>
-
-<div class="expandable section">
-  <h2>Employees</h2>
-	<div class="expand">
-    {% for employee in employees %}
-      <p><b>{{employee['Name']}}</b> ({{employee['Amount']}}/10) </p>
-      <p>Price: {{employee['Price']}}</p>
-      <p>Boost: {{employee['Boost']}}</p>
-    {% endfor %}
-  </div>
-</div>
-
-<div class="expandable section">
-  <h2>Decorations</h2>
-	<div class="expand">
-    {% for decoration in decorations %}
-      <p><b>{{decoration['Name']}}</b> ({{decoration['Amount']}}/10) </p>
-      <p>Price: {{decoration['Price']}}</p>
-      <p>Boost: {{decoration['Boost']}}</p>
-    {% endfor %}
-  </div>
-</div>
-
-<div class="expandable section">
-  <h2>Upgrades</h2>
-	<div class="expand">
-    {% for up in upgrades %}
-      <p><b>{{up['Name']}}</b> ({{up['Amount']}}/10) </p>
-      <p>Price: {{up['Price']}}</p>
-      <p>Boost: {{up['Boost']}}</p>
-    {% endfor %}
-  </div>
-</div>
-
-<div class="expandable section">
-  <h2>Shop</h2>
-	<div class="expand">
-    <form action="{{ url_for('shop') }}" method="POST">
-      <label for="title">Item name:</label><br>
-      <input type="text" id="title" name="title" max="30" min="2" required><br><br>
-      <label for="category">Category name:</label><br>
-      <select id="category" name="category" required>
-        <option value="decorations">Decorations</option>
-        <option value="upgrades">Upgrades</option>
-        <option value="employees">Employees</option>
-      </select><br><br>
-      <button type="submit">Submit</button>
-    </form>
-	</div>
-</div>
-
-<div class="expandable section">
-  <h2>Buy menu slot</h2>
-	<div class="expand">
-    <form action="{{ url_for('buymenuslot') }}" method="POST">
-      <label for="title">Drink name:</label><br>
-      <select id="title" name="title" required>
-        <option value="Beer">Beer for ₹4000000.00</option>
-        <option value="Wine">Wine for ₹4000000.00</option>
-        <option value="Vodka">Vodka for ₹4000000.00</option>
-        <option value="Whiskey">Whiskey for ₹4000000.00</option>
-        <option value="Rum">Rum for ₹4000000.00</option>
-        <option value="Brandy">Brandy for ₹4000000.00</option>
-        <option value="Gin">Gin for ₹4000000.00</option>
-        <option value="Coca Cola">Coca Cola for ₹3000000.00</option>
-        <option value="Fanta Orange">Fanta Orange for ₹3000000.00</option>
-        <option value="Fanta Lemon">Fanta Lemon for ₹3000000.00</option>
-        <option value="Lemonade">Lemonade for ₹3000000.00</option>
-        <option value="Sparkling Water">Sparkling Water for ₹3000000.00</option>
-        <option value="Pepsi">Pepsi for ₹3000000.00</option>
-        <option value="7 Up">7 Up for ₹3000000.00</option>
-        <option value="Dr Pepper">Dr Pepper for ₹3000000.00</option>
-        <option value="Apple Juice">Apple Juice for ₹2000000.00</option>
-        <option value="Orange Juice">Orange Juice for ₹2000000.00</option>
-        <option value="Pineapple Juice">Pineapple Juice for ₹2000000.00</option>
-        <option value="Grape Juice">Grape Juice for ₹2000000.00</option>
-        <option value="Cranberry Juice">Cranberry Juice for ₹2000000.00</option>
-        <option value="Tea">Tea  for ₹1000000.00</option>
-        <option value="Coffee">Coffee for ₹1000000.00</option>
-        <option value="Hot Chocolate">Hot Chocolate for ₹1000000.00</option>
-        <option value="Bubble Tea">Bubble Tea for ₹1000000.00</option>
-      </select><br><br>
-      <button type="submit">Submit</button>
-    </form>
-	</div>
-</div>
-
-<div class="expandable section">
-  <h2>Franchise</h2>
-	<div class="expand">
-    {% if franstats == None %}
-      <p>You are not in a franchise!</p>
-      <h3>Make Franchise</h3>
-      <form action="{{ url_for('makefranchiseapp') }}" method="POST">
-        <label for="name">Franchise Name:</label><br>
-        <input type="text" id="name" name="name" required><br><br>
-        <label for="tag">Franchise Tag:</label><br>
-        <input type="text" id="tag" name="tag" min="3" max="3" required><br><br>
-        <button type="submit">Submit</button>
-      </form>
+  <body class="container">
+    <!-- inline css is never a good thing -->
+    <link rel="stylesheet" href="/static/index.css" />
+    <link rel="stylesheet" href="/static/expand.css" />
+    <center>
+      <h1 class="title">Drinks cabin</h1>
+    </center>
+      {% if cookie == "False" %}
+      <div class="auth">
+      <div class="expandable section auth-box">
+        <h2>signup</h2>
+        <div class="expand">
+          <div class="login-form-body">
+            <div class="login-form-heading">
+              <h1>signup</h1>
+              <br>
+            </div>
+            <div class="login-form-form">
+              <form method="POST" action="{{ url_for('signup') }}">
+                <input class="login-form-input" placeholder="username" name="names">
+                <input class="login-form-input" placeholder="password" type="password" name="passwords">
+                <input class="login-form-input" placeholder="confirm password" type="password" name="passwordagain"><br>
+                <button class="login-form-button">signup</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="expandable section auth-box">
+        <h2>login</h2>
+        <div class="expand">
+          <div class="login-form-body">
+            <div class="login-form-heading">
+              <h1>login</h1>
+              <br>
+            </div>
+            <div class="login-form-form">
+              <form method="POST" action="../login">
+                <input class="login-form-input" placeholder="username" name="namelogin">
+                <input class="login-form-input" placeholder="password" type="password" name="passwordl"><br>
+                <button class="login-form-button">login</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     {% else %}
-      <p>Name: {{franstats['Name']}} </p>
-      <p>Tag: {{franstats['Tag']}} </p>
+    </div>
+    <div class="expandable section">
+      <h2>{{cookie}}</h2>
+      <div class="expand">
+        <h3>Stats</h3>
+        <p>Money: ₹{{user['Money']}}</p>
+        <p>Drinks: {{user['Drinks']}}</p>
+        <p>Hourly Income: ₹{{user['Hourly']}}.00</p>
+        <h3>Menu</h3>
+        {% for item in user['Menu'] %}
+        {% if item['Name'] == "Water" or item['Name'] == "Bubble Tea" %}
+        {% set emoji = "🥤" %}
+        {% elif item['Type'] == "Popular" %}
+        {% set emoji = "🫖" %}
+        {% elif item['Type'] == "Juice" %}
+        {% set emoji = "🍹" %}
+        {% elif item['Type'] == "Alcoholic" %}
+        {% set emoji = "🍺" %}
+        {% endif %}
+        <p>{{emoji}} {{item['Name']}} : ₹{{item['Price']}}</p>
+        {% endfor %}
+        <h3>Cooldowns</h3>
+        <p>Work: {{ready[0]}}</p>
+        <p>Tips: {{ready[1]}}</p>
+        <p>Overtime: {{ready[2]}}</p>
+        <p>Daily: {{ready[3]}}</p>
+      </div>
+    </div>
+    <div class="expandable section">
+      <h2>Commands</h2>
+      <div class="expand">
+        <a href="/work">Work</a>
+        <br>
+        <a href="/tips">Tip</a>
+        <br>
+        <a href="/daily">Daily</a>
+      </div>
+    </div>
+    <div class="expandable section">
+      <h2>Employees</h2>
+      <div class="expand">
+        {% for employee in employees %}
+        <p><b>{{employee['Name']}}</b> ({{employee['Amount']}}/10) </p>
+        <p>Price: {{employee['Price']}}</p>
+        <p>Boost: {{employee['Boost']}}</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="expandable section">
+      <h2>Decorations</h2>
+      <div class="expand">
+        {% for decoration in decorations %}
+        <p><b>{{decoration['Name']}}</b> ({{decoration['Amount']}}/10) </p>
+        <p>Price: {{decoration['Price']}}</p>
+        <p>Boost: {{decoration['Boost']}}</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="expandable section">
+      <h2>Upgrades</h2>
+      <div class="expand">
+        {% for up in upgrades %}
+        <p><b>{{up['Name']}}</b> ({{up['Amount']}}/10) </p>
+        <p>Price: {{up['Price']}}</p>
+        <p>Boost: {{up['Boost']}}</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="expandable section">
+      <h2>Shop</h2>
+      <div class="expand">
+        <form action="{{ url_for('shop') }}" method="POST">
+          <label for="title">Item name:</label><br>
+          <input type="text" id="title" name="title" max="30" min="2" required><br><br>
+          <label for="category">Category name:</label><br>
+          <select id="category" name="category" required>
+            <option value="decorations">Decorations</option>
+            <option value="upgrades">Upgrades</option>
+            <option value="employees">Employees</option>
+          </select>
+          <br><br>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div class="expandable section">
+      <h2>Buy menu slot</h2>
+      <div class="expand">
+        <form action="{{ url_for('buymenuslot') }}" method="POST">
+          <label for="title">Drink name:</label><br>
+          <select id="title" name="title" required>
+            <option value="Beer">Beer for ₹4000000.00</option>
+            <option value="Wine">Wine for ₹4000000.00</option>
+            <option value="Vodka">Vodka for ₹4000000.00</option>
+            <option value="Whiskey">Whiskey for ₹4000000.00</option>
+            <option value="Rum">Rum for ₹4000000.00</option>
+            <option value="Brandy">Brandy for ₹4000000.00</option>
+            <option value="Gin">Gin for ₹4000000.00</option>
+            <option value="Coca Cola">Coca Cola for ₹3000000.00</option>
+            <option value="Fanta Orange">Fanta Orange for ₹3000000.00</option>
+            <option value="Fanta Lemon">Fanta Lemon for ₹3000000.00</option>
+            <option value="Lemonade">Lemonade for ₹3000000.00</option>
+            <option value="Sparkling Water">Sparkling Water for ₹3000000.00</option>
+            <option value="Pepsi">Pepsi for ₹3000000.00</option>
+            <option value="7 Up">7 Up for ₹3000000.00</option>
+            <option value="Dr Pepper">Dr Pepper for ₹3000000.00</option>
+            <option value="Apple Juice">Apple Juice for ₹2000000.00</option>
+            <option value="Orange Juice">Orange Juice for ₹2000000.00</option>
+            <option value="Pineapple Juice">Pineapple Juice for ₹2000000.00</option>
+            <option value="Grape Juice">Grape Juice for ₹2000000.00</option>
+            <option value="Cranberry Juice">Cranberry Juice for ₹2000000.00</option>
+            <option value="Tea">Tea  for ₹1000000.00</option>
+            <option value="Coffee">Coffee for ₹1000000.00</option>
+            <option value="Hot Chocolate">Hot Chocolate for ₹1000000.00</option>
+            <option value="Bubble Tea">Bubble Tea for ₹1000000.00</option>
+          </select>
+          <br><br>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div class="expandable section">
+      <h2>Franchise</h2>
+      <div class="expand">
+        {% if franstats == None %}
+        <p>You are not in a franchise!</p>
+        <h3>Make Franchise</h3>
+        <form action="{{ url_for('makefranchiseapp') }}" method="POST">
+          <label for="name">Franchise Name:</label><br>
+          <input type="text" id="name" name="name" required><br><br>
+          <label for="tag">Franchise Tag:</label><br>
+          <input type="text" id="tag" name="tag" min="3" max="3" required><br><br>
+          <button type="submit">Submit</button>
+        </form>
+        {% else %}
+        <p>Name: {{franstats['Name']}} </p>
+        <p>Tag: {{franstats['Tag']}} </p>
+        {% endif %}
+      </div>
+    </div>
+    <h2><a href="/logout">Logout</a></h2>
     {% endif %}
-    
-  </div>
-</div>
-
-
-<h2><a href="/logout">Logout</a></h2>
-
-{% endif %}
-
-<script src="/static/expand.js"></script>
-
-</body>
+    <script src="/static/expand.js"></script>
+  </body>
 </html>

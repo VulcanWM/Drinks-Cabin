@@ -1,12 +1,7 @@
-body{
-  background-color: #171D2D;
-  color: white; 
-  font-family: arial;
-}
-
 .error{
   background-color: #ff491c;
-  width: 300px;
+  margin-left: 35%;
+  margin-right: 35%;
   height: 30px;
   font-size: 15px;
   padding-top: 15px;

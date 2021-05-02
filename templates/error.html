@@ -15,7 +15,7 @@
               <br>
             </div>
             <div class="login-form-form">
-              <form method="POST" action="../signup">
+              <form method="POST" action="{{ url_for('signup') }}">
                 <input class="login-form-input" placeholder="username" name="names">
                 <input class="login-form-input" placeholder="password" type="password" name="passwords">
                 <input class="login-form-input" placeholder="confirm password" type="password" name="passwordagain"><br>
@@ -36,8 +36,8 @@
             <div class="login-form-form">
               <form method="POST" action="../login">
                 <input class="login-form-input" placeholder="username" name="namelogin">
-                <input class="login-form-input" placeholder="password" type="password" name="passwords"><br>
-                <button class="login-form-button">signup</button>
+                <input class="login-form-input" placeholder="password" type="password" name="passwordl"><br>
+                <button class="login-form-button">login</button>
               </form>
             </div>
           </div>
