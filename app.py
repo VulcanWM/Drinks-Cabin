@@ -3,7 +3,7 @@ import os
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame
 from lists import decorations, employees, upgrades
 
 @app.route("/")
@@ -135,16 +135,67 @@ def buymenuslot():
       return render_template("success.html", type="buymenu", item=item)
     return render_template("error.html", error=func)
 
-@app.route("/makefranchise", methods=['POST', 'GET'])
-def makefranchiseapp():
+# @app.route("/makefranchise", methods=['POST', 'GET'])
+# def makefranchiseapp():
+#   if request.method == "POST":
+#     if getcookie("User") == False:
+#       return render_template("error.html", error="You have not logged in!")
+#     if checkhourly() == True:
+#       return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+#     name = request.form['name']
+#     tag = request.form['tag']
+#     func = makefranchise(getcookie("User"), tag, name)
+#     if func == True:
+#       return render_template("success.html", type="makefranchise", name=name, tag=tag)
+#     return render_template("error.html", error=func)
+
+@app.route("/rolldice", methods=['POST', 'GET'])
+def rollapp():
+  if request.method == 'POST':
+    if getcookie("User") == False:
+      return render_template("error.html", error="You have not logged in!")
+    if checkhourly() == True:
+      return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+    number = request.form['number']
+    bet = request.form['bet']
+    func = rolldice(getcookie("User"), number, bet)
+    if func.startswith("You "):
+      return render_template("error.html", error=func)
+    if "lost" in func:
+      return render_template("error.html", error=func)
+    if "won" in func:
+      return render_template("success.html", type="gambling", success=func)
+
+@app.route("/flipcoin", methods=['POST', 'GET'])
+def flipapp():
   if request.method == "POST":
     if getcookie("User") == False:
       return render_template("error.html", error="You have not logged in!")
     if checkhourly() == True:
       return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
-    name = request.form['name']
-    tag = request.form['tag']
-    func = makefranchise(getcookie("User"), tag, name)
-    if func == True:
-      return render_template("success.html", type="makefranchise", name=name, tag=tag)
-    return render_template("error.html", error=func)
+    side = request.form['side']
+    bet = request.form['bet']
+    func = flipcoin(getcookie("User"), side, bet)
+    if func.startswith("You "):
+      return render_template("error.html", error=func)
+    if "lost" in func:
+      return render_template("error.html", error=func)
+    if "won" in func:
+      return render_template("success.html", type="gambling", success=func)
+
+@app.route("/cupgame", methods=['POST', 'GET'])
+def cupapp():
+  if request.method == "POST":
+    if getcookie("User") == False:
+      return render_template("error.html", error="You have not logged in!")
+    if checkhourly() == True:
+      return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+    number = request.form['number']
+    bet = request.form['bet']
+    func = cupgame(getcookie("User"), number, bet)
+    if func.startswith("You "):
+      return render_template("error.html", error=func)
+    if "lost" in func:
+      return render_template("error.html", error=func)
+    if "won" in func:
+      return render_template("success.html", type="gambling", success=func)

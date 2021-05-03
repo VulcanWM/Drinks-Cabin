@@ -166,7 +166,7 @@
         </form>
       </div>
     </div>
-    <div class="expandable section">
+    <!-- <div class="expandable section">
       <h2>Franchise</h2>
       <div class="expand">
         {% if franstats == None %}
@@ -184,7 +184,59 @@
         <p>Tag: {{franstats['Tag']}} </p>
         {% endif %}
       </div>
+    </div> -->
+
+    <div class="expandable section">
+      <h2>Gambling</h2>
+      <div class="expand">
+        <form action="{{ url_for('rollapp') }}" method="POST">
+          <h3>Roll Dice</h3>
+          <label for="bet">Bet:</label><br>
+          <input type="number" id="bet" name="bet" required><br><br>
+          <label for="number">Number:</label><br>
+          <select id="number" name="number" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+          <br><br>
+          <button type="submit">Submit</button>
+        </form>
+        <br>
+        <br>
+        <form action="{{ url_for('flipapp') }}" method="POST">
+          <h3>Flip Coin</h3>
+          <label for="bet">Bet:</label><br>
+          <input type="number" id="bet" name="bet" required><br><br>
+          <label for="side">Side:</label><br>
+          <select id="side" name="side" required>
+            <option value="heads">Heads</option>
+            <option value="tails">Tails</option>
+          </select>
+          <br><br>
+          <button type="submit">Submit</button>
+        </form>
+        <br>
+        <br>
+        <form action="{{ url_for('cupapp') }}" method="POST">
+          <h3>Cup Game</h3>
+          <label for="bet">Bet:</label><br>
+          <input type="number" id="bet" name="bet" required><br><br>
+          <label for="number">Cup Number:</label><br>
+          <select id="number" name="number" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+          <br><br>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     </div>
+
     <h2><a href="/logout">Logout</a></h2>
     {% endif %}
     <script src="/static/expand.js"></script>

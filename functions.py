@@ -602,3 +602,96 @@ def getuserfranhourly(username):
   for fran in fhourlycol.find():
     if fran['Franchise'] == franname['Tag']:
       return fran
+
+def rolldice(username, number, bet):
+  if int(bet) < 10:
+    return "You have to bet more than ₹10!"
+  if int(bet) > 10000:
+    return "You have to bet less than ₹10000!"
+  if float(getuser(username)['Money']) < float(bet):
+    return f"You don't have ₹{str(bet)}!"
+  dice = random.randint(1,6)
+  if int(dice) == int(number):
+    for user in profilescol.find():
+      if user['Username'] == username:
+        user2 = user
+        money = user2['Money']
+        del user2['Money']
+        user2['Money'] = str(float(money) + float(bet * 6)) + "0"
+        delete = {"_id": user['_id']}
+        profilescol.delete_one(delete)
+        profilescol.insert_many([user2])
+    return f"The dice rolled {str(dice)}! You won ₹{str(int(bet) * 6)}!"
+  else:
+    for user in profilescol.find():
+      if user['Username'] == username:
+        user2 = user
+        money = user2['Money']
+        del user2['Money']
+        user2['Money'] = str(float(money) - float(bet)) + "0"
+        delete = {"_id": user['_id']}
+        profilescol.delete_one(delete)
+        profilescol.insert_many([user2])
+    return f"The dice rolled {str(dice)}! You lost ₹{str(bet)}!"
+
+def flipcoin(username, side, bet):
+  if int(bet) < 10:
+    return "You have to bet more than ₹10!"
+  if int(bet) > 2500:
+    return "You have to bet less than ₹2500!"
+  if float(getuser(username)['Money']) < float(bet):
+    return f"You don't have ₹{str(bet)}!"
+  coin = random.choice(['heads', 'tails'])
+  if side == coin:
+    for user in profilescol.find():
+      if user['Username'] == username:
+        user2 = user
+        money = user2['Money']
+        del user2['Money']
+        user2['Money'] = str(float(money) + float(bet)) + "0"
+        delete = {"_id": user['_id']}
+        profilescol.delete_one(delete)
+        profilescol.insert_many([user2])
+    return f"The coin flipped {coin}! You won ₹{str(bet)}!"
+  else:
+    for user in profilescol.find():
+      if user['Username'] == username:
+        user2 = user
+        money = user2['Money']
+        del user2['Money']
+        user2['Money'] = str(float(money) - float(bet)) + "0"
+        delete = {"_id": user['_id']}
+        profilescol.delete_one(delete)
+        profilescol.insert_many([user2])
+    return f"The coin flipped {str(coin)}! You lost ₹{str(bet)}!"
+
+def cupgame(username, number, bet):
+  if int(bet) < 10:
+    return "You have to bet more than ₹10!"
+  if int(bet) > 5000:
+    return "You have to bet less than ₹5000!"
+  if float(getuser(username)['Money']) < float(bet):
+    return f"You don't have ₹{str(bet)}!"
+  cup = random.randint(1,3)
+  if int(number) == int(cup):
+    for user in profilescol.find():
+      if user['Username'] == username:
+        user2 = user
+        money = user2['Money']
+        del user2['Money']
+        user2['Money'] = str(float(money) + float(bet * 3)) + "0"
+        delete = {"_id": user['_id']}
+        profilescol.delete_one(delete)
+        profilescol.insert_many([user2])
+    return f"The ball was in cup number {str(cup)}! You won ₹{str(int(bet) * 3)}!"
+  else:
+    for user in profilescol.find():
+      if user['Username'] == username:
+        user2 = user
+        money = user2['Money']
+        del user2['Money']
+        user2['Money'] = str(float(money) - float(bet)) + "0"
+        delete = {"_id": user['_id']}
+        profilescol.delete_one(delete)
+        profilescol.insert_many([user2])
+    return f"The ball was in cup number {str(cup)}! You lost ₹{str(bet)}!"
