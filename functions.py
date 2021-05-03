@@ -18,6 +18,8 @@ hourlycol = hourlydb.Hourly
 franchisedb = mainclient.Franchise
 fstatscol = franchisedb.Stats
 fhourlycol = franchisedb.Hourly
+smdb = mainclient.SM
+smcol = smdb.SM
 
 def addcookie(key, value):
   session[key] = value
@@ -695,3 +697,48 @@ def cupgame(username, number, bet):
         profilescol.delete_one(delete)
         profilescol.insert_many([user2])
     return f"The ball was in cup number {str(cup)}! You lost ₹{str(bet)}!"
+
+# def strawmarket():
+#   Change is percentage change in the last 24 hours
+#   document = [{
+#     "Color": "Red",
+#     "Price": 100,
+#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#   },
+#   {
+#     "Color": "Orange",
+#     "Price": 100,
+#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#   },
+#   {
+#     "Color": "Yellow",
+#     "Price": 100,
+#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#   },
+#   {
+#     "Color": "Green",
+#     "Price": 100,
+#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#   },
+#   {
+#     "Color": "Blue",
+#     "Price": 100,
+#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#   },
+#   {
+#     "Color": "Indigo",
+#     "Price": 100,
+#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#   },
+#   {
+#     "Color": "Violet",
+#     "Price": 100,
+#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#   }]
+#   smcol.insert_many(document)
+
+def getsm(color):
+  for color in smcol.find():
+    if color['Color'] == color:
+      return color
+  return False

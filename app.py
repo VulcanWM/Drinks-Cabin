@@ -3,7 +3,7 @@ import os
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame, getsm
 from lists import decorations, employees, upgrades
 
 @app.route("/")
@@ -199,3 +199,15 @@ def cupapp():
       return render_template("error.html", error=func)
     if "won" in func:
       return render_template("success.html", type="gambling", success=func)
+
+# @app.route("/sm/<color>")
+# def sm(color):
+#   if getsm(color) == False:
+#     return "This color doesn't exist in the straw market!"
+#   plt.plot(["23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13", "12", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "Now"], getsm(color)['Change'], color='red', marker='o')
+#   plt.title(f'Changes in the Straw Market for {color}', fontsize=14)
+#   plt.xlabel('Hours Ago', fontsize=14)
+#   plt.ylabel('Change in Percentage', fontsize=14)
+#   plt.grid(True)
+#   plt.savefig(f'pic/{color}.png')
+#   return f'<img src="pic/{color}.png" alt="Graph">'
