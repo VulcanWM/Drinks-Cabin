@@ -267,7 +267,7 @@ def dailyfunc(username):
       delete = {"_id": uservalue['_id']}
       cooldowncol.delete_one(delete)
       cooldowncol.insert_many([user2])
-  return "You have claimed your ₹25000.00 daily reward!"
+  return "You have claimed your ₹500.00 daily reward!"
 
 def tipfunc(username):
   if getusercd(username)[1] != "Ready":
@@ -606,6 +606,7 @@ def getuserfranhourly(username):
       return fran
 
 def rolldice(username, number, bet):
+  bet = int(bet)
   if int(bet) < 10:
     return "You have to bet more than ₹10!"
   if int(bet) > 10000:
@@ -637,6 +638,7 @@ def rolldice(username, number, bet):
     return f"The dice rolled {str(dice)}! You lost ₹{str(bet)}!"
 
 def flipcoin(username, side, bet):
+  bet = int(bet)
   if int(bet) < 10:
     return "You have to bet more than ₹10!"
   if int(bet) > 2500:
@@ -668,6 +670,7 @@ def flipcoin(username, side, bet):
     return f"The coin flipped {str(coin)}! You lost ₹{str(bet)}!"
 
 def cupgame(username, number, bet):
+  bet = int(bet)
   if int(bet) < 10:
     return "You have to bet more than ₹10!"
   if int(bet) > 5000:
@@ -698,47 +701,8 @@ def cupgame(username, number, bet):
         profilescol.insert_many([user2])
     return f"The ball was in cup number {str(cup)}! You lost ₹{str(bet)}!"
 
-# def strawmarket():
-#   Change is percentage change in the last 24 hours
-#   document = [{
-#     "Color": "Red",
-#     "Price": 100,
-#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#   },
-#   {
-#     "Color": "Orange",
-#     "Price": 100,
-#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#   },
-#   {
-#     "Color": "Yellow",
-#     "Price": 100,
-#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#   },
-#   {
-#     "Color": "Green",
-#     "Price": 100,
-#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#   },
-#   {
-#     "Color": "Blue",
-#     "Price": 100,
-#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#   },
-#   {
-#     "Color": "Indigo",
-#     "Price": 100,
-#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#   },
-#   {
-#     "Color": "Violet",
-#     "Price": 100,
-#     "Change": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#   }]
-#   smcol.insert_many(document)
-
 def getsm(color):
-  for color in smcol.find():
-    if color['Color'] == color:
-      return color
+  for acolor in smcol.find():
+    if acolor['Color'] == color:
+      return acolor
   return False
