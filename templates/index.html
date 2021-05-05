@@ -229,7 +229,17 @@
         <a href="/sm/Violet">Violet</a>
       </div>
     </div>
-
+    <div class="expandable section">
+      <h2>Stocks you own</h2>
+      <div class="expand">
+        {% if sms == False or sms['Colors'] == {} %}
+          <p>You don't own any stocks!</p>
+        {% endif %}
+        {% for color in sms['Colors'] %}
+          <p>{{color}}: {{sms['Colors'][color]}}</p>
+        {% endfor %}
+      </div>
+    </div>
     <h2><a href="/logout">Logout</a></h2>
     {% endif %}
     <script src="/static/expand.js"></script>

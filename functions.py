@@ -20,6 +20,7 @@ fstatscol = franchisedb.Stats
 fhourlycol = franchisedb.Hourly
 smdb = mainclient.SM
 smcol = smdb.SM
+usersmcol = smdb.UserSM
 
 def addcookie(key, value):
   session[key] = value
@@ -706,3 +707,36 @@ def getsm(color):
     if acolor['Color'] == color:
       return acolor
   return False
+
+def getusersm(username):
+  for user in usersmcol.find():
+    if user['Username'] == username:
+      return user
+  return False
+
+def buysm(color, username, amount):
+  if getsm(color) == False:
+    return "This is not a real color!"
+  if getusersm(username) == False:
+    price = float(getsm(color)['Price']) * int(amount)
+    if float(getuser(username)['Money']) < price:
+      return "You don't have enough money!"
+    document = [{
+      "Username": username,
+      "Colors": {color: int(amount)}
+    }]
+    usersmcol.insert_many(document)
+    return True
+  coloramount = getusersm(username)['Colors'].get(color, 0)
+  if coloramount > 5000:
+    return "You cannot buy more than 5000 of each color stock!"
+  colors = getusersm(username)['Colors']
+  colors[color] = int(amount)
+  delete = {"_id": getusersm(username)['_id']}
+  usersmcol.delete_one(delete)
+  document = [{
+    "Username": username,
+    "Colors": colors
+  }]
+  usersmcol.insert_many(document)
+  return Tru

@@ -4,7 +4,7 @@ import requests
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame, getsm
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame, getsm, getusersm
 
 from lists import decorations, employees, upgrades
 
@@ -24,7 +24,7 @@ def main():
   userupgrades = []
   for up in upgrades:
     userupgrades.append({"Name": up, "Boost": f"₹{upgrades[up]}/hr", "Price": f"₹{str(getpriceup(cookie, up))}0", "Amount": getamountup(getcookie("User"), up)})
-  return render_template("index.html", cookie=cookie, user=user, ready=ready, employees=useremployees, decorations=userdecos, upgrades=userupgrades, franstats=getuserfranstats(cookie), franhourly=getuserfranhourly(cookie))
+  return render_template("index.html", cookie=cookie, user=user, ready=ready, employees=useremployees, decorations=userdecos, upgrades=userupgrades, franstats=getuserfranstats(cookie), franhourly=getuserfranhourly(cookie), sms=getusersm(cookie))
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
@@ -210,4 +210,4 @@ def sm(color):
   url = str(response.content)
   url = url.replace("b'", "")
   url = url[:-1]
-  return f'<img src="{url}" alt="Graph" width="1000" length="300">'
+  return f'<img src="{url}" alt="Graph" width="1000" length="300"><br><a href="/">Home</a>'
