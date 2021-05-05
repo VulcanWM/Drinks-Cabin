@@ -4,7 +4,7 @@ import requests
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame, getsm, getusersm
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame, getsm, getusersm, buysm
 
 from lists import decorations, employees, upgrades
 
@@ -211,3 +211,20 @@ def sm(color):
   url = url.replace("b'", "")
   url = url[:-1]
   return f'<img src="{url}" alt="Graph" width="1000" length="300"><br><a href="/">Home</a>'
+
+@app.route("/buystraw", methods=['POST', 'GET'])
+def buystraw():
+  if request.method == "POST":
+    if getcookie("User") == False:
+      return render_template("error.html", error="You have not logged in!")
+    if checkhourly() == True:
+      return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+    number = request.form['amount']
+    color = request.form['color']
+    if int(number) > 5000:
+      return "You cannot buy more than 5000 of each straw!"
+    func = buysm(color, getcookie("User"), number)
+    if func == True:
+      return render_template("success.html", type="buystraw")
+    else:
+      return render_template("error.html", error=func)

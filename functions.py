@@ -729,9 +729,9 @@ def buysm(color, username, amount):
     return True
   coloramount = getusersm(username)['Colors'].get(color, 0)
   if coloramount > 5000:
-    return "You cannot buy more than 5000 of each color stock!"
+    return "You cannot buy more than 5000 of each straw!"
   colors = getusersm(username)['Colors']
-  colors[color] = int(amount)
+  colors[color] = int(coloramount) + int(amount)
   delete = {"_id": getusersm(username)['_id']}
   usersmcol.delete_one(delete)
   document = [{
@@ -739,4 +739,4 @@ def buysm(color, username, amount):
     "Colors": colors
   }]
   usersmcol.insert_many(document)
-  return Tru
+  return True
