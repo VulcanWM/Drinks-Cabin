@@ -244,3 +244,7 @@ def sellstraw():
       return render_template("success.html", dict=func, type="sellstraw")
     else:
       return render_template("error.html", error=func)
+  
+@app.route("/rules")
+def rules():
+  return render_template("rules.html")
