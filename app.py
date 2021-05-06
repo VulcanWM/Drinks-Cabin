@@ -4,7 +4,7 @@ import requests
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame, getsm, getusersm, buysm
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame, getsm, getusersm, buysm, sellsm
 
 from lists import decorations, employees, upgrades
 
@@ -210,7 +210,8 @@ def sm(color):
   url = str(response.content)
   url = url.replace("b'", "")
   url = url[:-1]
-  return f'<img src="{url}" alt="Graph" width="1000" length="300"><br><a href="/">Home</a>'
+  price = getsm(color)['Price']
+  return f'<img src="{url}" alt="Graph" width="1000" length="300"><br><p>Price per straw: ₹{price}</p><br><br><a href="/">Home</a>'
 
 @app.route("/buystraw", methods=['POST', 'GET'])
 def buystraw():
@@ -226,5 +227,20 @@ def buystraw():
     func = buysm(color, getcookie("User"), number)
     if func == True:
       return render_template("success.html", type="buystraw")
+    else:
+      return render_template("error.html", error=func)
+
+@app.route("/sellstraw", methods=['POST', 'GET'])
+def sellstraw():
+  if request.method == 'POST':
+    if getcookie("User") == False:
+      return render_template("error.html", error="You have not logged in!")
+    if checkhourly() == True:
+      return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+    amount = request.form['amount']
+    color = request.form['color']
+    func = sellsm(getcookie("User"), color, amount)
+    if type(func) is dict:
+      return render_template("success.html", dict=func, type="sellstraw")
     else:
       return render_template("error.html", error=func)

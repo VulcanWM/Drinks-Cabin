@@ -3,6 +3,7 @@
     <!-- inline css is never a good thing -->
     <link rel="stylesheet" href="/static/index.css" />
     <link rel="stylesheet" href="/static/expand.css" />
+    <link rel="stylesheet" href="/static/accordion.css" />
     <center>
       <h1 class="title">Drinks cabin</h1>
     </center>
@@ -170,53 +171,60 @@
     <div class="expandable section">
       <h2>Gambling</h2>
       <div class="expand">
-        <form action="{{ url_for('rollapp') }}" method="POST">
-          <h3>Roll Dice</h3>
-          <label for="bet">Bet:</label><br>
-          <input type="number" id="bet" name="bet" required><br><br>
-          <label for="number">Number:</label><br>
-          <select id="number" name="number" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
-          <br><br>
-          <button type="submit">Submit</button>
-        </form>
-        <br>
-        <br>
-        <form action="{{ url_for('flipapp') }}" method="POST">
-          <h3>Flip Coin</h3>
-          <label for="bet">Bet:</label><br>
-          <input type="number" id="bet" name="bet" required><br><br>
-          <label for="side">Side:</label><br>
-          <select id="side" name="side" required>
-            <option value="heads">Heads</option>
-            <option value="tails">Tails</option>
-          </select>
-          <br><br>
-          <button type="submit">Submit</button>
-        </form>
-        <br>
-        <br>
-        <form action="{{ url_for('cupapp') }}" method="POST">
-          <h3>Cup Game</h3>
-          <label for="bet">Bet:</label><br>
-          <input type="number" id="bet" name="bet" required><br><br>
-          <label for="number">Cup Number:</label><br>
-          <select id="number" name="number" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-          <br><br>
-          <button type="submit">Submit</button>
-        </form>
+        <button class="accordion">Roll Dice</button>
+        <div class="panel">
+          <form action="{{ url_for('rollapp') }}" method="POST">
+            <label for="bet">Bet:</label><br>
+            <input type="number" id="bet" name="bet" required><br><br>
+            <label for="number">Number:</label><br>
+            <select id="number" name="number" required>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+            <br><br>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+
+        <button class="accordion">Flip Coin</button>
+        <div class="panel">
+          <form action="{{ url_for('flipapp') }}" method="POST">
+            <h3>Flip Coin</h3>
+            <label for="bet">Bet:</label><br>
+            <input type="number" id="bet" name="bet" required><br><br>
+            <label for="side">Side:</label><br>
+            <select id="side" name="side" required>
+              <option value="heads">Heads</option>
+              <option value="tails">Tails</option>
+            </select>
+            <br><br>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+
+        <button class="accordion">Cup Game</button>
+        <div class="panel">
+          <form action="{{ url_for('cupapp') }}" method="POST">
+            <h3>Cup Game</h3>
+            <label for="bet">Bet:</label><br>
+            <input type="number" id="bet" name="bet" required><br><br>
+            <label for="number">Cup Number:</label><br>
+            <select id="number" name="number" required>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+            <br><br>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
       </div>
     </div>
+
     <div class="expandable section">
       <h2>Straw Market Trend</h2>
       <div class="expand">
@@ -229,11 +237,12 @@
         <a href="/sm/Violet">Violet</a>
       </div>
     </div>
+
     <div class="expandable section">
-      <h2>Buy Stocks</h2>
+      <h2>Buy Straws</h2>
       <div class="expand">
         <form action="{{ url_for('buystraw') }}" method="POST">
-          <label for="number">Cup Number:</label><br>
+          <label for="number">Color:</label><br>
           <select id="color" name="color" required>
             <option value="Red">Red</option>
             <option value="Orange">Orange</option>
@@ -250,8 +259,31 @@
         </form>
       </div>
     </div>
+
     <div class="expandable section">
-      <h2>Stocks you own</h2>
+      <h2>Sell Straws</h2>
+      <div class="expand">
+        <form action="{{ url_for('sellstraw') }}" method="POST">
+          <label for="number">Color:</label><br>
+          <select id="color" name="color" required>
+            <option value="Red">Red</option>
+            <option value="Orange">Orange</option>
+            <option value="Yellow">Yellow</option>
+            <option value="Green">Green</option>
+            <option value="Blue">Blue</option>
+            <option value="Indigo">Indigo</option>
+            <option value="Violet">Violet</option>
+          </select>
+          <br><br>
+          <label for="amount">Amount:</label><br>
+          <input type="number" id="amount" name="amount" required><br><br>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="expandable section">
+      <h2>Straws you own</h2>
       <div class="expand">
         {% if sms == False or sms['Colors'] == {} %}
           <p>You don't own any stocks!</p>
@@ -261,8 +293,10 @@
         {% endfor %}
       </div>
     </div>
+
     <h2><a href="/logout">Logout</a></h2>
     {% endif %}
     <script src="/static/expand.js"></script>
+    <script src="/static/accordion.js"></script>
   </body>
 </html>

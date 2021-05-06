@@ -717,10 +717,21 @@ def getusersm(username):
 def buysm(color, username, amount):
   if getsm(color) == False:
     return "This is not a real color!"
+  if int(amount) < 1:
+    return "Your amount has to be bigger than 0!"
+  price = float(getsm(color)['Price']) * int(amount)
+  if float(getuser(username)['Money']) < price:
+    return "You don't have enough money!"
+  for user in profilescol.find():
+    if user['Username'] == username:
+      user2 = user
+      money = user2['Money']
+      del user2['Money']
+      user2['Money'] = str(float(money) - float(price)) + "0"
+      delete = {"_id": user['_id']}
+      profilescol.delete_one(delete)
+      profilescol.insert_many([user2])
   if getusersm(username) == False:
-    price = float(getsm(color)['Price']) * int(amount)
-    if float(getuser(username)['Money']) < price:
-      return "You don't have enough money!"
     document = [{
       "Username": username,
       "Colors": {color: int(amount)}
@@ -740,3 +751,34 @@ def buysm(color, username, amount):
   }]
   usersmcol.insert_many(document)
   return True
+
+def sellsm(username, color, amount):
+  if getsm(color) == False:
+    return "This is not a real color!"
+  if int(amount) < 1:
+    return "Your amount has to be bigger than 0!"
+  if getusersm(username) == False:
+    return "You don't have any straws!"
+  if getusersm(username)['Colors'].get(color, 0) < int(amount):
+    return f"You don't have {str(amount)} {color} straws!"
+  price = getsm(color)['Price'] * int(amount)
+  for user in usersmcol.find():
+    if user['Username'] == username:
+      user2 = user
+      number = user2['Colors'][color]
+      del user2['Colors'][color]
+      user2['Colors'][color] = int(number) - int(amount)
+      delete = {"_id": user['_id']}
+      usersmcol.delete_one(delete)
+      usersmcol.insert_many([user2])
+  for user in profilescol.find():
+    if user['Username'] == username:
+      user2 = user
+      money = user2['Money']
+      del user2['Money']
+      user2['Money'] = str(float(money) + float(price)) + "0"
+      delete = {"_id": user['_id']}
+      profilescol.delete_one(delete)
+      profilescol.insert_many([user2])
+  return {"Amount": str(amount), "Color": color, "Price": str(price)}
+      

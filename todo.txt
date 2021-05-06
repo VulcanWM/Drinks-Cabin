@@ -1,0 +1,3 @@
+add a begginers guide
+add some rules
+fix the accordion code

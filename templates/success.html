@@ -22,6 +22,8 @@
   <p>{{success}}</p>
 {% elif type == "buystraw" %}
   <p>You bought some more straw!</p>
+{% elif type == "sellstraw" %}
+  <p>You sold {{dict['Amount']}} {{dict['Color']}} straws for ₹{{dict['Price']}}</p>
 {% endif %}
 <br>
 <p>Click <a href="/">here</a> to go back to the main page</p>
