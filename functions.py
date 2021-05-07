@@ -242,7 +242,7 @@ def dailyfunc(username):
   for uservalue in profilescol.find():
     if uservalue['Username'] == username:
       user2 = uservalue
-      newam = str(float(user2['Money']) + float(500.0))
+      newam = str(float(user2['Money']) + float(5000.0))
       newam = str(newam) + "0"
       del user2['Money']
       user2['Money'] = newam
@@ -268,7 +268,7 @@ def dailyfunc(username):
       delete = {"_id": uservalue['_id']}
       cooldowncol.delete_one(delete)
       cooldowncol.insert_many([user2])
-  return "You have claimed your ₹500.00 daily reward!"
+  return "You have claimed your ₹5000.00 daily reward!"
 
 def tipfunc(username):
   if getusercd(username)[1] != "Ready":
