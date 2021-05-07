@@ -211,7 +211,7 @@ def sm(color):
   url = url.replace("b'", "")
   url = url[:-1]
   price = getsm(color)['Price']
-  return f'<img src="{url}" alt="Graph" width="1000" length="300"><br><p>Price per straw: ₹{price}</p><br><br><a href="/">Home</a>'
+  return f'<h1>{color} Straw Market</h1><title>{color} Straw Market</title><img src="{url}" alt="Graph" width="1000" length="300"><br><p>Price per straw: ₹{price}</p><br><br><a href="/">Home</a>'
 
 @app.route("/buystraw", methods=['POST', 'GET'])
 def buystraw():
@@ -248,3 +248,7 @@ def sellstraw():
 @app.route("/rules")
 def rules():
   return render_template("rules.html")
+
+@app.route("/guide")
+def guide():
+  return render_template("README.html")
