@@ -751,7 +751,7 @@ def buysm(color, username, amount):
   }]
   usersmcol.insert_many(document)
   return True
-
+  
 def sellsm(username, color, amount):
   if getsm(color) == False:
     return "This is not a real color!"
