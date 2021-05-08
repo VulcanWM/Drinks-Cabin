@@ -13,6 +13,7 @@ Credits:
 - [The bot TacoShack](https://tacoshack.dev). I got all of the inspiration of this website from there.
 - [@ch1ck3n](https://repl.it/@ch1ck3n). Helping me with the css.
 
+[Play Drinks Cabin](https://Drinks-Cabin.vulcanwm.repl.co)
 [Source Code](https://replit.com/@VulcanWM/Drinks-Cabin)
 [Github Repo](https://github.com/VulcanWM/Drinks-Cabin)
 
