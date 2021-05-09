@@ -3,9 +3,10 @@
   margin-left: 35%;
   margin-right: 35%;
   height: 30px;
-  font-size: 15px;
+  font-size: 14px;
   padding-top: 15px;
   border-radius: 15px;
+  color: black;
 }
 
 a{
@@ -73,4 +74,10 @@ a{
   cursor: pointer;
   border: 2px solid #68d696;
   transition: 0.2s;
+}
+
+body {
+  color: #81CFF2;
+  background-color: #171D2D;
+  font-family: 'Itim', cursive;
 }
