@@ -1,0 +1,47 @@
+<script>
+  @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+  body {
+    font-family: 'Itim', cursive;
+  }
+  
+</script>
+<html>
+  <body class="container">
+    <!-- inline css is never a good thing -->
+    <link rel="stylesheet" href="/static/index.css" />
+    <link rel="stylesheet" href="/static/expand.css" />
+    <link rel="stylesheet" href="/static/accordion.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <center>
+      <title>Drinks Cabin</title>
+      <h1 class="title">Drinks cabin</h1>
+      <h2><a href="/">Home</a></h2>
+    </center>
+    <h2>{{cookie}}</h2>
+    <h3>Stats</h3>
+    <p>Money: ₹{{user['Money']}}</p>
+    <p>Drinks: {{user['Drinks']}}</p>
+    <p>Hourly Income: ₹{{user['Hourly']}}.00</p>
+    <h3>Menu</h3>
+    {% for item in user['Menu'] %}
+    {% if item['Name'] == "Water" or item['Name'] == "Bubble Tea" %}
+    {% set emoji = "🥤" %}
+    {% elif item['Type'] == "Popular" %}
+    {% set emoji = "🫖" %}
+    {% elif item['Type'] == "Juice" %}
+    {% set emoji = "🍹" %}
+    {% elif item['Type'] == "Alcoholic" %}
+    {% set emoji = "🍺" %}
+    {% endif %}
+    <p>{{emoji}} {{item['Name']}} : ₹{{item['Price']}}</p>
+    {% endfor %}
+    <h3>Cooldowns</h3>
+    <p>Work: {{ready[0]}}</p>
+    <p>Tips: {{ready[1]}}</p>
+    <p>Overtime: {{ready[2]}}</p>
+    <p>Daily: {{ready[3]}}</p>
+    <script src="/static/expand.js"></script>
+    <script src="/static/accordion.js"></script>
+  </body>
+</html>

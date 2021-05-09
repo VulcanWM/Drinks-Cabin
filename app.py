@@ -98,7 +98,7 @@ def daily():
     return render_template("error.html", error="Don't be too greedy!")
   return render_template("success.html", type="daily", daily=daily)
 
-@app.route("/shop", methods=['POST', 'GET'])
+@app.route("/shopfunc", methods=['POST', 'GET'])
 def shop():
   if request.method == "POST":
     if getcookie("User") == False:
@@ -252,3 +252,58 @@ def rules():
 @app.route("/guide")
 def guide():
   return render_template("README.html")
+
+@app.route("/profile")
+def profilepage():
+  if getcookie("User") == False:
+    return render_template("error.html", error="You have not logged in!")
+  if checkhourly() == True:
+    return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+  cookie = getcookie("User")
+  user = getuser(cookie)
+  ready = getusercd(cookie)
+  return render_template("profile.html", user=user, ready=ready, cookie=cookie)
+
+@app.route("/commands")
+def commandspage():
+  if getcookie("User") == False:
+    return render_template("error.html", error="You have not logged in!")
+  if checkhourly() == True:
+    return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+  return render_template("commands.html")
+
+@app.route("/shop")
+def shoppage():
+  if getcookie("User") == False:
+    return render_template("error.html", error="You have not logged in!")
+  if checkhourly() == True:
+    return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+  cookie = getcookie("User")
+  useremployees = []
+  for employee in employees:
+    useremployees.append({"Name": employee, "Boost": f"₹{employees[employee]}/hr", "Price": f"₹{str(getpriceempl(cookie, employee))}0", "Amount": getamountempl(getcookie("User"), employee)})
+  userdecos = []
+  for deco in decorations:
+    userdecos.append({"Name": deco, "Boost": f"₹{decorations[deco]}/hr", "Price": f"₹{str(getpricedeco(cookie, deco))}0", "Amount": getamountdeco(getcookie("User"), deco)})
+  userupgrades = []
+  for up in upgrades:
+    userupgrades.append({"Name": up, "Boost": f"₹{upgrades[up]}/hr", "Price": f"₹{str(getpriceup(cookie, up))}0", "Amount": getamountup(getcookie("User"), up)})
+  return render_template("shop.html", decorations=userdecos, upgrades=userupgrades, employees=useremployees)
+
+@app.route("/straws")
+def strawspage():
+  if getcookie("User") == False:
+    return render_template("error.html", error="You have not logged in!")
+  if checkhourly() == True:
+    return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+  cookie = getcookie("User")
+  return render_template("straws.html", cookie=cookie, sms=getusersm(cookie))
+
+@app.route("/gambling")
+def gamblingpage():
+  if getcookie("User") == False:
+    return render_template("error.html", error="You have not logged in!")
+  if checkhourly() == True:
+    return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+  cookie = getcookie("User")
+  return render_template("gambling.html", cookie=cookie)

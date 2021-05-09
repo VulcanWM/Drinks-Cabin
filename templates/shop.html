@@ -1,0 +1,109 @@
+<script>
+  @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+  body {
+    font-family: 'Itim', cursive;
+  }
+  
+</script>
+<html>
+  <body class="container">
+    <!-- inline css is never a good thing -->
+    <link rel="stylesheet" href="/static/index.css" />
+    <link rel="stylesheet" href="/static/expand.css" />
+    <link rel="stylesheet" href="/static/accordion.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <center>
+      <title>Drinks Cabin</title>
+      <h1 class="title">Drinks cabin</h1>
+      <h2><a href="/">Home</a></h2>
+    </center>
+    <h2>Items and Shop</h2>
+    <br>
+    <div class="expandable section">
+      <h3>Decorations</h3>
+      <div class="expand">
+        {% for decoration in decorations %}
+        <p><b>{{decoration['Name']}}</b> ({{decoration['Amount']}}/10) </p>
+        <p>Price: {{decoration['Price']}}</p>
+        <p>Boost: {{decoration['Boost']}}</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="expandable section">
+      <h3>Upgrades</h3>
+      <div class="expand">
+        {% for up in upgrades %}
+        <p><b>{{up['Name']}}</b> ({{up['Amount']}}/10) </p>
+        <p>Price: {{up['Price']}}</p>
+        <p>Boost: {{up['Boost']}}</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="expandable section">
+      <h3>Employees</h3>
+      <div class="expand">
+        {% for up in employees %}
+        <p><b>{{up['Name']}}</b> ({{up['Amount']}}/10) </p>
+        <p>Price: {{up['Price']}}</p>
+        <p>Boost: {{up['Boost']}}</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="expandable section">
+      <h3>Shop</h3>
+      <div class="expand">
+        <form action="{{ url_for('shop') }}" method="POST">
+          <label for="title">Item name:</label><br>
+          <input type="text" id="title" name="title" max="30" min="2" required><br><br>
+          <label for="category">Category name:</label><br>
+          <select id="category" name="category" required>
+            <option value="decorations">Decorations</option>
+            <option value="upgrades">Upgrades</option>
+            <option value="employees">Employees</option>
+          </select>
+          <br><br>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div class="expandable section">
+      <h3>Buy menu slot</h3>
+      <div class="expand">
+        <form action="{{ url_for('buymenuslot') }}" method="POST">
+          <label for="title">Drink name:</label><br>
+          <select id="title" name="title" required>
+            <option value="Beer">Beer for ₹4000000.00</option>
+            <option value="Wine">Wine for ₹4000000.00</option>
+            <option value="Vodka">Vodka for ₹4000000.00</option>
+            <option value="Whiskey">Whiskey for ₹4000000.00</option>
+            <option value="Rum">Rum for ₹4000000.00</option>
+            <option value="Brandy">Brandy for ₹4000000.00</option>
+            <option value="Gin">Gin for ₹4000000.00</option>
+            <option value="Coca Cola">Coca Cola for ₹3000000.00</option>
+            <option value="Fanta Orange">Fanta Orange for ₹3000000.00</option>
+            <option value="Fanta Lemon">Fanta Lemon for ₹3000000.00</option>
+            <option value="Lemonade">Lemonade for ₹3000000.00</option>
+            <option value="Sparkling Water">Sparkling Water for ₹3000000.00</option>
+            <option value="Pepsi">Pepsi for ₹3000000.00</option>
+            <option value="7 Up">7 Up for ₹3000000.00</option>
+            <option value="Dr Pepper">Dr Pepper for ₹3000000.00</option>
+            <option value="Apple Juice">Apple Juice for ₹2000000.00</option>
+            <option value="Orange Juice">Orange Juice for ₹2000000.00</option>
+            <option value="Pineapple Juice">Pineapple Juice for ₹2000000.00</option>
+            <option value="Grape Juice">Grape Juice for ₹2000000.00</option>
+            <option value="Cranberry Juice">Cranberry Juice for ₹2000000.00</option>
+            <option value="Tea">Tea  for ₹1000000.00</option>
+            <option value="Coffee">Coffee for ₹1000000.00</option>
+            <option value="Hot Chocolate">Hot Chocolate for ₹1000000.00</option>
+            <option value="Bubble Tea">Bubble Tea for ₹1000000.00</option>
+          </select>
+          <br><br>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <script src="/static/expand.js"></script>
+    <script src="/static/accordion.js"></script>
+  </body>
+</html>
