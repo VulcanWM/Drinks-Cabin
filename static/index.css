@@ -131,7 +131,7 @@ a:hover {
   background: #171D2D;
 }
 
-input[type=text] {
+input[type=text, type=number] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -140,6 +140,7 @@ input[type=text] {
   background-color: lightblue;
   color: white;
 }
+
 
 /* end scrollbar */
 

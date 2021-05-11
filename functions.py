@@ -781,4 +781,37 @@ def sellsm(username, color, amount):
       profilescol.delete_one(delete)
       profilescol.insert_many([user2])
   return {"Amount": str(amount), "Color": color, "Price": str(price)}
-      
+
+def getlbmoney():
+  lb = []
+  for user in profilescol.find().sort("Money", -1):
+    user2 = user
+    user2['Rank'] = str(len(lb) + 1)
+    del user2['_id']
+    lb.append(user2)
+    if len(lb) == 10:
+      break
+  return lb
+
+def getlbdrinks():
+  lb = []
+  for user in profilescol.find().sort("Drinks", -1):
+    user2 = user
+    user2['Rank'] = str(len(lb) + 1)
+    del user2['_id']
+    lb.append(user2)
+    if len(lb) == 10:
+      break
+  return lb
+
+def getlbhourly():
+  lb = []
+  for user in profilescol.find().sort("Hourly", -1):
+    user2 = user
+    user2['Rank'] = str(len(lb) + 1)
+    del user2['_id']
+    lb.append(user2)
+    if len(lb) == 10:
+      break
+  return lb
+

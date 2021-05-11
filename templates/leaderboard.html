@@ -3,7 +3,6 @@
   body {
     font-family: 'Recursive', sans-serif;
   }
-  
 </script>
 <html>
   <body class="container">
@@ -18,29 +17,23 @@
       <h1 class="title">Drinks cabin</h1>
       <h2><a href="/">Home</a></h2>
     </center>
-    <h2>{{cookie}}</h2>
-    <h3>Stats</h3>
-    <p>Money: ₹{{user['Money']}}</p>
-    <p>Drinks: {{user['Drinks']}}</p>
-    <p>Hourly Income: ₹{{user['Hourly']}}.00</p>
-    <h3>Menu</h3>
-    {% for item in user['Menu'] %}
-    {% if item['Name'] == "Water" or item['Name'] == "Bubble Tea" %}
-    {% set emoji = "🥤" %}
-    {% elif item['Type'] == "Popular" %}
-    {% set emoji = "🫖" %}
-    {% elif item['Type'] == "Juice" %}
-    {% set emoji = "🍹" %}
-    {% elif item['Type'] == "Alcoholic" %}
-    {% set emoji = "🍺" %}
-    {% endif %}
-    <p>{{emoji}} {{item['Name']}} : ₹{{item['Price']}}</p>
-    {% endfor %}
-    <h3>Cooldowns</h3>
-    <p>Work: {{ready[0]}}</p>
-    <p>Tips: {{ready[1]}}</p>
-    <p>Overtime: {{ready[2]}}</p>
-    <p>Daily: {{ready[3]}}</p>
+    <h2>Leaderboards</h2>
+    <div class="expandable section">
+      <h2>Drinks Leaderboard</h2>
+      <div class="expand">
+        {% for user in drinkslb %}
+          <p>{{user['Rank']}}) {{user['Username']}}: {{user['Drinks']}}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="expandable section">
+      <h2>Hourly Leaderboard</h2>
+      <div class="expand">
+        {% for user in hourlylb %}
+          <p>{{user['Rank']}}) {{user['Username']}}: {{user['Hourly']}}
+        {% endfor %}
+      </div>
+    </div>
     <script src="/static/expand.js"></script>
     <script src="/static/accordion.js"></script>
   </body>

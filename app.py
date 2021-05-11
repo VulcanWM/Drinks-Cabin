@@ -4,7 +4,7 @@ import requests
 from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame, getsm, getusersm, buysm, sellsm
+from functions import getcookie, getuser, gethashpass, addcookie, allusers, makeaccount, delcookie, makeaccountcd, getusercd, workfunc, tipfunc, dailyfunc, checkhourly, makeaccounthr, getpriceempl, getpricedeco, getpriceup, buyempl, buydeco, buyup, getamountempl, getamountdeco, getamountup, buymenuitem, getuserfranstats, getuserfranhourly, makefranchise, rolldice, flipcoin, cupgame, getsm, getusersm, buysm, sellsm, getlbdrinks, getlbhourly, getlbmoney
 
 from lists import decorations, employees, upgrades
 
@@ -307,3 +307,11 @@ def gamblingpage():
     return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
   cookie = getcookie("User")
   return render_template("gambling.html", cookie=cookie)
+
+@app.route("/leaderboards")
+def leaderboardspage():
+  if getcookie("User") == False:
+    return render_template("error.html", error="You have not logged in!")
+  if checkhourly() == True:
+    return render_template("error.html", error="Hourly incomes are being sent out. Try again in a few seconds!")
+  return render_template("leaderboard.html", hourlylb=getlbhourly(), drinkslb=getlbdrinks(), moneylb=getlbmoney())
