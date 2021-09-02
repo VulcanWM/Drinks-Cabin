@@ -56,9 +56,10 @@ def gethashpass(username):
   return False
 
 def getuser(username):
-  for user in profilescol.find():
-    if user['Username'] == username:
-      return user
+  myquery = { "Username": username }
+  mydoc = profilescol.find(myquery)
+  for x in mydoc:
+    return x
   return False
 
 def allusers():
