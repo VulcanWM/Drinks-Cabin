@@ -18,7 +18,7 @@ a{
   width: 300px;
   background-color: #1B232F;
   border-radius: 30px;
-  font-family: sans-serif;
+  font-family: 'Source Code Pro', monospace;
   color: white;
   text-align: center;
   padding: 10px;
@@ -79,5 +79,5 @@ a{
 body {
   color: #81CFF2;
   background-color: #171D2D;
-  font-family: 'Itim', cursive;
+  font-family: 'Source Code Pro', monospace;
 }

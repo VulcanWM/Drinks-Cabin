@@ -1,2 +1,0 @@
-add different pages for each command category
-add some css for the other pages and input forms water.css https://watercss.kognise.dev/

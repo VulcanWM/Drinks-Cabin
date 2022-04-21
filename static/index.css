@@ -1,13 +1,11 @@
 /* start login form */
 
-@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
-
 .login-form-body{
   height: 350px;
   width: 300px;
   background-color: #1B232F;
   border-radius: 30px;
-  font-family: sans-serif;
+  font-family: 'Source Code Pro', monospace;
   color: white;
   text-align: center;
   padding: 10px;
@@ -74,7 +72,7 @@
 body {
   color: #81CFF2;
   background-color: #171D2D;
-  font-family: 'Itim', cursive;
+  font-family: 'Source Code Pro', monospace;
 }
 a {
   color: #81CFF2;
