@@ -19,6 +19,6 @@ Credits:
 
 Make sure to check out the [rules](https://Drinks-Cabin.vulcanwm.repl.co/rules).
 
-Hope you have fun playing!
+---
 
--[VulcanWM](https://repl.it/@VulcanWM)
+Made by [VulcanWM](https://vulcanwm.is-a.dev)
